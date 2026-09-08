@@ -1,0 +1,24 @@
+{
+  "Mo": {
+    "plain": {
+      "path": "free_atom_refs_mo_sv/Mo/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mo_sv 02Feb2006"
+        ],
+        "sha256": "2731df97e41766cc617548c5a8267718fdef1f509ac6bafa01e745abea2bdfaa"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs_mo_sv/Mo/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mo_sv 02Feb2006"
+        ],
+        "sha256": "2731df97e41766cc617548c5a8267718fdef1f509ac6bafa01e745abea2bdfaa"
+      }
+    }
+  }
+}

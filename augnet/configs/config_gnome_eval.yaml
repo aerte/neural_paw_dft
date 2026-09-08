@@ -1,0 +1,117 @@
+# Evaluation of a trained AugNet model on the GNoME SAD VASP set.
+#
+# The model block reproduces the training config (shared head,
+# hybrid-by-L, no gate); avg_num_neighbors comes from --neighbor-stats-file,
+# which must be the TRAINING split's table. --init-from compares hidden_width / max_ell / r_max /
+# num_interactions / correlation / use_tensor_product_for_high_L /
+# avg_num_neighbors / use_gate / head* against the checkpoint and refuses a
+# mismatch, so this file is not free to drift from the training config.
+#
+# The stats file is passed with --stats-file and must be the RUN's own paw_stats.pt
+# (the free-atom reference transform the weights were trained under).
+#
+# Only test matters here (--eval-only). The optimizer/loss/epochs blocks are kept
+# because the config loader requires them.
+project:
+  base_name: augnet
+  split_name: gnome
+  run_name: auto
+
+  # A flat directory of <id>.chgcar files -- the raw corpus is one
+  # directory per structure and does not index by filename.
+  data_dir: ./data/gnome_flat
+  out_dir: ./augnet_runs/gnome_eval
+
+  hpc_data_dir: ./data/gnome_flat
+  hpc_out_dir: ./augnet_runs/gnome_eval
+
+runtime:
+  use_hpc_paths: auto
+lightning:
+  enabled: true
+  accelerator: auto
+  devices: auto
+  precision: 32
+  log_every_n_steps: 1
+  model_summary_depth: 2
+  inference_speed_warmup_batches: 2
+  save_top_k: 1
+wandb:
+  enabled: true
+  project: augnet-scaling
+  entity: null
+  name: auto
+  tags:
+    - eval-only
+    - gnome
+    - nogate
+    - lmaxmix-masked
+    - shared-head
+    - hybrid-by-l
+    - freeatom-delta
+    - mace
+  mode: online
+
+data:
+  augmentation_channel: total
+  # The GNoME runs are split 1686 x LMAXMIX=6 / 299 x LMAXMIX=4, so the mask is
+  # per structure here in a way it was not for MP-full. Matches the training run.
+  lmaxmix_mode: auto
+  lmaxmix_file: null
+  # Passed with --stats-file (the training run's own paw_stats.pt). No default that
+  # silently works: the wrong file rescales every physical-space metric.
+  stats_file: null
+  split_file: data_splits/datasplits_gnome.json
+  use_split_file_on_hpc: true
+  export_test_predictions: true
+  aug_pred_dir_test: auto
+  strict_split_ids: false
+
+seed: 5
+epochs: 5
+batch_size: 1
+# GNoME CHGCARs average ~65 MB (vs ~10 MB for MP-full) and pymatgen parses the
+# whole grid per structure, so this eval is read-bound, not GPU-bound.
+num_workers: 20
+val_fraction: 0.1
+
+optimizer:
+  lr: 0.01
+  backbone_lr_multiplier: 0.1
+  weight_decay: 0.000001
+  grad_clip: 0.0
+
+loss:
+  name: mse
+  delta: 1.0
+  gate_weight: 0.01
+  gate_threshold: 0.000001
+  moment_reg_enabled: true
+  moment_lambda_tr1: 0.05
+  moment_lambda_tr2: 0.02
+  moment_eps: 0.000001
+
+model:
+  hidden_width: 64
+  max_ell: 3
+  r_max: 6.0
+  num_interactions: 2
+  correlation: 3
+  # auto + --neighbor-stats-file <the file the TRAINING run used>: both resolve
+  # the same measured value, so the --init-from exact comparison passes for any
+  # split's model. Passing a different split's table than the checkpoint was
+  # trained with fails that check (as it should).
+  avg_num_neighbors: auto
+  neighbor_stats_file: null # REQUIRED per arm (--neighbor-stats-file)
+  use_tensor_product_for_high_L: true
+  use_gate: false
+  gate_mode: standardized
+  head: shared
+  head_rank: 64
+  head_block_mixing: true
+  head_linear_max_l: 3
+  # Matches the training run (hybrid backend). The checkpoint is written under
+  # this kernel path.
+  enable_cueq: true
+  cueq_layout: mul_ir
+  enable_oeq: true

@@ -1,0 +1,129 @@
+wandb: True
+
+full_inference_val: True
+full_inference_test: True
+infer_chunk_size: 100000
+
+log_cov_stats: False
+use_tensor_bias: False
+use_channel_gains: False
+use_cholesky_sigma: False
+use_sigma_axis_floor: False
+sigma_scale_sp: 1.0
+sigma_floor: 0.0001
+norm_mode: total
+
+
+write_stage_timing_csv: True
+stage_timing_splits: ["val", "test"]
+
+# ROTATIONS
+rotate_train: True
+rotate_val: False
+rotate_test: False
+rotate_train_center: "origin"   # or "cop", "com"
+rotate_eval_center: "origin"
+rotate_eval_deterministic: False
+
+pw_grid: [128, 128, 128] # just for initializing the fft grid
+pw_norm: backward
+signed_weights: tanh_softplus
+
+fft_set_dc_to_electrons: False
+train_sample_frac: 0
+val_sample_frac: 0
+test_sample_frac: 0
+
+data_split: mpfull2025
+debug: False
+
+electra_type: single
+plot_gaus_pos: True
+backbone: escaip
+escaip_cfg_path: "./model/escaip/escaip_config.yaml"
+
+project_name: ELECTRAFI_SPIN
+save_memory: True
+max_time: '14:00:00:00'
+max_epochs: 5
+
+crystal: True
+pbc: True
+wrap: True
+weight_decay: 0.00
+
+loss_type: "normal"
+cutoff: 30
+master_units: 2160
+initial_lr: 0.0003
+final_lr: 0.0001
+clip_grad: True
+gradient_clip_value: 1.0      # norm-based; tune 0.5-2.0
+sigma_scale_min: 0.01         # lower bound on Gaussian width scale; calibrate from sigma-percentile logs
+sigma_scale_max: 25.0         # upper bound on Gaussian width scale
+weight_mag_max: 50.0          # cap on per-Gaussian |weight| before electron renorm
+negative_contributions: True
+gaus_per_electrons: 120 # MP setting
+lr_dec_every: 1
+lr_gamma: 0.7
+dens_path: /path/to/MP_FULL_2025
+
+precision: float
+
+relu: False
+seed: 505
+cluster: True
+hpc: True
+
+data_split_path: ./data_splits/
+
+hpc_base_path: ./
+cluster_base_path: ./
+# Base path for prediction outputs (CHGCARs, deltas, gaussian positions, outliers); model_dir is separate.
+output_base_path: .
+pred_dens_path_val: pred_dens/validation/
+density_delta_path_val: density_deltas/validation
+pred_dens_path_test: pred_dens/test/
+density_delta_path_test: density_deltas/test
+gaus_pos_path_val: gaussian_positions/validation/
+gaus_pos_path_test: gaussian_positions/test/
+gaus_pos_outlier_path: outliers/
+visualize_every: 250
+model_dir: trained_models
+
+ood_eval: False
+ood_names: ["gnome_ecd"]
+ood_paths: ["/gnome_ecd"]
+
+load_model: False
+load_model_path: trained_models/ELECTRAFI_BEST.model_state_dict
+
+
+# TRAINING
+optimizer: muon_mix
+amsgrad: True
+fused: False
+n_epochs: 1000
+eval_every: 1
+construct_test_cd: True
+construct_val_cd: True
+save_model: True
+
+# --- spin channel (NMAE-trained; loss_type stays "normal" = NMAE for charge) ---
+spin_type: total_diff
+spin_loss_weight: 0.2
+spin_mag_min: 0.1
+spin_warmup_steps: 500
+
+# --- divergence guards ---
+sigma_trace_max: 0.0          # width cap off (a cap only pins the runaway at the cap)
+skip_nonfinite_grads: True    # skip the step on any non-finite gradient
+skip_loss_spike_factor: 50.0  # skip steps whose charge NMAE exceeds 50x a 0.99-EMA baseline
+wsum_rel_floor: 0.001         # electron-renorm floor relative to sum|w|
+
+# model_name isolates the checkpoint dir and wandb id from other mpfull2025 runs.
+# The arm-defining change: no net-moment constraint on the spin channel.
+spin_renorm: False
+
+model_name: mpfull2025_spin_norenorm
+run_name: full_spin_norenorm

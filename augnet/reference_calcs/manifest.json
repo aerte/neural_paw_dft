@@ -1,0 +1,1150 @@
+{
+  "Ac": {
+    "plain": {
+      "path": "free_atom_refs/Ac/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ac 06Sep2000"
+        ],
+        "sha256": "bb5ba839374fb7f2d78ba326a82f7a76d67f8ae383781aae84c2c4bf194eba65"
+      }
+    }
+  },
+  "Ag": {
+    "plain": {
+      "path": "free_atom_refs/Ag/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ag 06Sep2000"
+        ],
+        "sha256": "a00b436855d565ff397db73486030fb330ec79794f762970acc1ef55fa50a932"
+      }
+    }
+  },
+  "Al": {
+    "plain": {
+      "path": "free_atom_refs/Al/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Al 04Jan2001"
+        ],
+        "sha256": "6d651b1443182ff9b94be78eb5efe2b1eade4e8380a616787bd59f0f8d1b5883"
+      }
+    }
+  },
+  "Ar": {
+    "plain": {
+      "path": "free_atom_refs/Ar/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ar 07Sep2000"
+        ],
+        "sha256": "7cf079b0460af5d29a1024e2d4f55b11603911600f555efa00e947bc6c7c6f43"
+      }
+    }
+  },
+  "As": {
+    "plain": {
+      "path": "free_atom_refs/As/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE As 06Sep2000"
+        ],
+        "sha256": "641cfe574a54148d7b00101833dd6a475d7fe94e1f4d4398fae9d41ebf40eebb"
+      }
+    }
+  },
+  "Au": {
+    "plain": {
+      "path": "free_atom_refs/Au/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Au 06Sep2000"
+        ],
+        "sha256": "2c2d2257c907eec256d7e9f5cb55897ff5aa4e3a87c30c0bd3a9db7181d3deb5"
+      }
+    }
+  },
+  "B": {
+    "plain": {
+      "path": "free_atom_refs/B/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE B 06Sep2000"
+        ],
+        "sha256": "4fe1a562c466df93a3becab3eb0e8cefe0fb11ba79fed16db43665a9775b5206"
+      }
+    }
+  },
+  "Ba": {
+    "plain": {
+      "path": "free_atom_refs/Ba/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ba_sv 06Sep2000"
+        ],
+        "sha256": "8115ba489599046f7fc39df4796022348af11505f19fa260d661f121e8fb1efd"
+      }
+    }
+  },
+  "Be": {
+    "plain": {
+      "path": "free_atom_refs/Be/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Be_sv 06Sep2000"
+        ],
+        "sha256": "a27c5ff62823be838f80f57c1d248df2011d824853e133489c773c4127bf9a46"
+      }
+    }
+  },
+  "Bi": {
+    "plain": {
+      "path": "free_atom_refs/Bi/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Bi 08Apr2002"
+        ],
+        "sha256": "33cc80e5cd40034223507480bfec711f1c2989c7f9869d5cad1303d4ef371bc3"
+      }
+    }
+  },
+  "Br": {
+    "plain": {
+      "path": "free_atom_refs/Br/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Br 06Sep2000"
+        ],
+        "sha256": "7822cbc0fec6a8364c7754ecd5e83faf75fcdca8440c20c82f4eeaa9b39b6f72"
+      }
+    }
+  },
+  "C": {
+    "plain": {
+      "path": "free_atom_refs/C/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE C 08Apr2002"
+        ],
+        "sha256": "e01305036c53fa7b0d9ebeafbf28f664bf599c0713d11bb7a5eae20f1c48ffed"
+      }
+    }
+  },
+  "Ca": {
+    "plain": {
+      "path": "free_atom_refs/Ca/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ca_sv 06Sep2000"
+        ],
+        "sha256": "13eabf8b12df4517ae5cb24528bd561a112d242979ab993cb5542d43454e90b0"
+      }
+    }
+  },
+  "Cd": {
+    "plain": {
+      "path": "free_atom_refs/Cd/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cd 06Sep2000"
+        ],
+        "sha256": "dd4ffa2f749ae7cfa033d0a0050557fbff3c5f090252d2103e4f086102c8081a"
+      }
+    }
+  },
+  "Ce": {
+    "plain": {
+      "path": "free_atom_refs/Ce/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ce 28Sep2000"
+        ],
+        "sha256": "0fd6d37203d606795b27bd23051b697bafbbcfd278025081902f7dbd16dc88c6"
+      }
+    }
+  },
+  "Cl": {
+    "plain": {
+      "path": "free_atom_refs/Cl/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cl 17Jan2003"
+        ],
+        "sha256": "2e1fd5020bc434fd615381f2565baa7a79e5810807d23e1ae4ac084d912de6a3"
+      }
+    }
+  },
+  "Co": {
+    "plain": {
+      "path": "free_atom_refs/Co/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Co 06Sep2000"
+        ],
+        "sha256": "affa3be7b4014d1475e4d8333c7b8b63c70a193f4239c8380342929f9d6b736f"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Co/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Co 06Sep2000"
+        ],
+        "sha256": "affa3be7b4014d1475e4d8333c7b8b63c70a193f4239c8380342929f9d6b736f"
+      }
+    }
+  },
+  "Cr": {
+    "plain": {
+      "path": "free_atom_refs/Cr/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cr_pv 07Sep2000"
+        ],
+        "sha256": "0a21b8be2b1cb39d0b62e8556566046b51c4d19f527060c99d40c719e3dcdbfe"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Cr/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cr_pv 07Sep2000"
+        ],
+        "sha256": "0a21b8be2b1cb39d0b62e8556566046b51c4d19f527060c99d40c719e3dcdbfe"
+      }
+    }
+  },
+  "Cs": {
+    "plain": {
+      "path": "free_atom_refs/Cs/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cs_sv 08Apr2002"
+        ],
+        "sha256": "3c153c202059bf7dbc782f555687ecdfefd348b8e797dc1087f367f40c743e5a"
+      }
+    }
+  },
+  "Cu": {
+    "plain": {
+      "path": "free_atom_refs/Cu/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Cu_pv 06Sep2000"
+        ],
+        "sha256": "bc4b473d19d59e676abffbae08275ced227bf8ed6a33028380d6f0c5c6eed965"
+      }
+    }
+  },
+  "Dy": {
+    "plain": {
+      "path": "free_atom_refs/Dy/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Dy_3 06Sep2000"
+        ],
+        "sha256": "7bc51417e7f6f344484ea77151ac26c5ea30762d1fe533be06381269bc46b11c"
+      }
+    }
+  },
+  "Er": {
+    "plain": {
+      "path": "free_atom_refs/Er/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Er_3 06Sep2000"
+        ],
+        "sha256": "02429fa5383257d776e1334992b8632e458d3ad3dd3d3e41f2e16d89cc6afcca"
+      }
+    }
+  },
+  "Eu": {
+    "plain": {
+      "path": "free_atom_refs/Eu/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Eu 08Apr2002"
+        ],
+        "sha256": "5c0435249f95860a644fbdbdd0c1931e1c001e48327ab96d9e7de464fa3d6536"
+      }
+    }
+  },
+  "F": {
+    "plain": {
+      "path": "free_atom_refs/F/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE F 08Apr2002"
+        ],
+        "sha256": "a1b2f3acf2cd7c7bf921113651b4d784ccf15c44faeadc4b2b35e4e123e4d49c"
+      }
+    }
+  },
+  "Fe": {
+    "plain": {
+      "path": "free_atom_refs/Fe/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Fe_pv 06Sep2000"
+        ],
+        "sha256": "dcc7d7dee4cbb5993852a777e3fb9dc0fea3aa50c561e3c401bf552eb9a10959"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Fe/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Fe_pv 06Sep2000"
+        ],
+        "sha256": "dcc7d7dee4cbb5993852a777e3fb9dc0fea3aa50c561e3c401bf552eb9a10959"
+      }
+    }
+  },
+  "Ga": {
+    "plain": {
+      "path": "free_atom_refs/Ga/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ga_d 06Sep2000"
+        ],
+        "sha256": "0de77aa6170c26df537185828b0fce13f69206e636baa11e4de1b107a6980f56"
+      }
+    }
+  },
+  "Gd": {
+    "plain": {
+      "path": "free_atom_refs/Gd/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Gd 08Apr2002"
+        ],
+        "sha256": "a48f455ffdf255dac8a580c25e8c5307c0ac44f7dd95058ae8222a37533a2e3d"
+      }
+    }
+  },
+  "Ge": {
+    "plain": {
+      "path": "free_atom_refs/Ge/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ge_d 06Sep2000"
+        ],
+        "sha256": "3625dac9177e3e7586104893b749ee23898a117dec07f612d9e5888787a39f5c"
+      }
+    }
+  },
+  "H": {
+    "plain": {
+      "path": "free_atom_refs/H/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE H 15Jun2001"
+        ],
+        "sha256": "b9ed9e0fd4e660c858a39f59be6bb91671733b1136a5cd56b772198ffb3ec7fb"
+      }
+    }
+  },
+  "He": {
+    "plain": {
+      "path": "free_atom_refs/He/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE He 05Jan2001"
+        ],
+        "sha256": "88967a9beb99cb6add640a067f847d725583b6dc5b9b1c6b6270b7bf28bac4b8"
+      }
+    }
+  },
+  "Hf": {
+    "plain": {
+      "path": "free_atom_refs/Hf/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Hf_pv 06Sep2000"
+        ],
+        "sha256": "88d75d6f73c0b3ee1fa3415f4d1d4f3d5db039a576bc04769c9e4f805e161302"
+      }
+    }
+  },
+  "Hg": {
+    "plain": {
+      "path": "free_atom_refs/Hg/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Hg 06Sep2000"
+        ],
+        "sha256": "02062c671bc751c6f83c0b1a685b2e0b1c4dc4822a3f136f39ae12d01bdccd8f"
+      }
+    }
+  },
+  "Ho": {
+    "plain": {
+      "path": "free_atom_refs/Ho/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ho_3 06Sep2000"
+        ],
+        "sha256": "1f395d56376e4898134bcbb1cd9a5ed66945283fbfe1f17be2d708f8f8cf0c82"
+      }
+    }
+  },
+  "I": {
+    "plain": {
+      "path": "free_atom_refs/I/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE I 08Apr2002"
+        ],
+        "sha256": "0a0eba48c23bd53d98facd1a9969bf68bb310fca8f32d8dd86344753af02b21f"
+      }
+    }
+  },
+  "In": {
+    "plain": {
+      "path": "free_atom_refs/In/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE In_d 06Sep2000"
+        ],
+        "sha256": "c64c7d4a37bec707013354b142055a3261097f469a6a395a2249fc146ae0daef"
+      }
+    }
+  },
+  "Ir": {
+    "plain": {
+      "path": "free_atom_refs/Ir/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ir 06Sep2000"
+        ],
+        "sha256": "e717d3d4a8a0e122fb77ed62cd91eeee216db857f151afbed9317faa2fb1420e"
+      }
+    }
+  },
+  "K": {
+    "plain": {
+      "path": "free_atom_refs/K/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE K_sv 06Sep2000"
+        ],
+        "sha256": "b5e8017696dccc2b104d519a01c9413cbff3f05393d5f78103895653fcaf120c"
+      }
+    }
+  },
+  "Kr": {
+    "plain": {
+      "path": "free_atom_refs/Kr/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Kr 07Sep2000"
+        ],
+        "sha256": "f61d7904aa6df78d7b9eb2b03c5a1aad9afe5720eedfc89a520bbaa477a40e38"
+      }
+    }
+  },
+  "La": {
+    "plain": {
+      "path": "free_atom_refs/La/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE La 06Sep2000"
+        ],
+        "sha256": "0f7d18f60cce85e6340b3a5c79a60e2a9ed947b1fec2f694f355319dd39f10f3"
+      }
+    }
+  },
+  "Li": {
+    "plain": {
+      "path": "free_atom_refs/Li/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Li_sv 23Jan2001"
+        ],
+        "sha256": "1b0821b3e16718e3e45955f6637ac588f96145382434d82ffc8ce9e1c665d41f"
+      }
+    }
+  },
+  "Lu": {
+    "plain": {
+      "path": "free_atom_refs/Lu/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Lu_3 06Sep2000"
+        ],
+        "sha256": "7e2595faaaa6a70b504ae98f4fbc5dd315ef44cb721560979f3a27557b4bc246"
+      }
+    }
+  },
+  "Mg": {
+    "plain": {
+      "path": "free_atom_refs/Mg/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mg_pv 06Sep2000"
+        ],
+        "sha256": "a1a6a2deb9d21c323fb70413fa27de16c2c9ffa9dff14d05b074a76bb26e5c6c"
+      }
+    }
+  },
+  "Mn": {
+    "plain": {
+      "path": "free_atom_refs/Mn/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mn_pv 07Sep2000"
+        ],
+        "sha256": "09fb1f012264c0e93524775af8f2b3cf58daa4b01b7c7c9f4324742358553fb0"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Mn/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mn_pv 07Sep2000"
+        ],
+        "sha256": "09fb1f012264c0e93524775af8f2b3cf58daa4b01b7c7c9f4324742358553fb0"
+      }
+    }
+  },
+  "Mo": {
+    "plain": {
+      "path": "free_atom_refs/Mo/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mo_pv 08Apr2002"
+        ],
+        "sha256": "ef7ae1920b9a16121a78d9bf18bc7161b9e91bc1f3ebc090fed5a69a365195a9"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Mo/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Mo_pv 08Apr2002"
+        ],
+        "sha256": "ef7ae1920b9a16121a78d9bf18bc7161b9e91bc1f3ebc090fed5a69a365195a9"
+      }
+    }
+  },
+  "N": {
+    "plain": {
+      "path": "free_atom_refs/N/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE N 08Apr2002"
+        ],
+        "sha256": "a653f49838306aa7eac659f3904c8c4f39805f57255df01e3f74d82bf740f128"
+      }
+    }
+  },
+  "Na": {
+    "plain": {
+      "path": "free_atom_refs/Na/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Na_pv 05Jan2001"
+        ],
+        "sha256": "4e84c676d061712771154e9b6b1fa87f90a519f28813765242e2d03c3722efe7"
+      }
+    }
+  },
+  "Nb": {
+    "plain": {
+      "path": "free_atom_refs/Nb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Nb_pv 08Apr2002"
+        ],
+        "sha256": "2f3031012d196248faa8d8e239925578fc980de189b1e3c31381a2360c339bc7"
+      }
+    }
+  },
+  "Nd": {
+    "plain": {
+      "path": "free_atom_refs/Nd/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Nd_3 06Sep2000"
+        ],
+        "sha256": "d6ccaf918eb68d2d671737a6f6b90fd79f1f9851a767ac3b1dcb261fbc955e35"
+      }
+    }
+  },
+  "Ne": {
+    "plain": {
+      "path": "free_atom_refs/Ne/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ne 05Jan2001"
+        ],
+        "sha256": "a7bea61749428f0306c41ea442ec54b503f4b0f1b22047fd37df7abe26609747"
+      }
+    }
+  },
+  "Ni": {
+    "plain": {
+      "path": "free_atom_refs/Ni/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ni_pv 06Sep2000"
+        ],
+        "sha256": "a14595dc34b4877f5619758eeec5bc78905bbe5fb422a466bc1b2ce82c2278b3"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/Ni/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ni_pv 06Sep2000"
+        ],
+        "sha256": "a14595dc34b4877f5619758eeec5bc78905bbe5fb422a466bc1b2ce82c2278b3"
+      }
+    }
+  },
+  "Np": {
+    "plain": {
+      "path": "free_atom_refs/Np/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Np 06Sep2000"
+        ],
+        "sha256": "0d97f7196a4a31f6745f5a435b0cc3c39a5a145f9a8d29797968b5e5e9b52d3b"
+      }
+    }
+  },
+  "O": {
+    "plain": {
+      "path": "free_atom_refs/O/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE O 08Apr2002"
+        ],
+        "sha256": "0e3e8791ec70153ca63efabba299c116c2b44807ea4c6fef45ca2958dd156693"
+      }
+    }
+  },
+  "Os": {
+    "plain": {
+      "path": "free_atom_refs/Os/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Os_pv 20Jan2003"
+        ],
+        "sha256": "10c5f8adcaa01972e6ad9f68b66203788f3899c7f3d1fcd04b2ab7a59ac62d50"
+      }
+    }
+  },
+  "P": {
+    "plain": {
+      "path": "free_atom_refs/P/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE P 17Jan2003"
+        ],
+        "sha256": "15a493c99d124695906abf368654cd7d0d6813c7a7a317b0b4e9229e0cf82147"
+      }
+    }
+  },
+  "Pa": {
+    "plain": {
+      "path": "free_atom_refs/Pa/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pa 07Sep2000"
+        ],
+        "sha256": "d75bea745bef6cb2e66f482e0e9b8503e7dd8a8806ab379c78ad6439aef2c31e"
+      }
+    }
+  },
+  "Pb": {
+    "plain": {
+      "path": "free_atom_refs/Pb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pb_d 06Sep2000"
+        ],
+        "sha256": "c43da2bda0a3f57339a529b010e40999a5785b7b7d8956a7bfb7ee90b726080d"
+      }
+    }
+  },
+  "Pd": {
+    "plain": {
+      "path": "free_atom_refs/Pd/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pd 05Jan2001"
+        ],
+        "sha256": "e65c3ff49396666c00c53dffd38ed74d67681956ea8df4da5f8af57a8380e8a8"
+      }
+    }
+  },
+  "Pm": {
+    "plain": {
+      "path": "free_atom_refs/Pm/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pm_3 07Sep2000"
+        ],
+        "sha256": "9fb2fa06047938abed98af25ac62b30244c12370e3d24f2433c07b295462390e"
+      }
+    }
+  },
+  "Pr": {
+    "plain": {
+      "path": "free_atom_refs/Pr/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pr_3 07Sep2000"
+        ],
+        "sha256": "7bcb43631b7fb5a976a166a6c2c95c40a53ce651d7990962051444da15134841"
+      }
+    }
+  },
+  "Pt": {
+    "plain": {
+      "path": "free_atom_refs/Pt/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pt 05Jan2001"
+        ],
+        "sha256": "85ddbd52f01de19dd11d70cc766ac6a00ef4c13c6ec41109148eddde402a1a0f"
+      }
+    }
+  },
+  "Pu": {
+    "plain": {
+      "path": "free_atom_refs/Pu/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Pu 06Sep2000"
+        ],
+        "sha256": "7787499bcc45b3b670218e7b1d0f1a79972b9165cc344c486a36ac4878f05a7b"
+      }
+    }
+  },
+  "Rb": {
+    "plain": {
+      "path": "free_atom_refs/Rb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Rb_sv 06Sep2000"
+        ],
+        "sha256": "74ff3f4f56b215fe57af0878e3e2bd69ae97bdbe6eaef2c51c996d4e1a3b5127"
+      }
+    }
+  },
+  "Re": {
+    "plain": {
+      "path": "free_atom_refs/Re/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Re_pv 06Sep2000"
+        ],
+        "sha256": "56d5ef860ba99a3ae3e8a546083f971d3673f8f2a95abf9d9f7f08e8b9ab40b6"
+      }
+    }
+  },
+  "Rh": {
+    "plain": {
+      "path": "free_atom_refs/Rh/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Rh_pv 06Sep2000"
+        ],
+        "sha256": "cca6665620f115608c87c843805dfc91d958604a2d53e3fa5e302b48c6cfe162"
+      }
+    }
+  },
+  "Ru": {
+    "plain": {
+      "path": "free_atom_refs/Ru/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ru_pv 06Sep2000"
+        ],
+        "sha256": "76d1d7bc3b56a1ff16d1fc8ce676c03ac1cf1b06758231cf73b2896ba2a66b76"
+      }
+    }
+  },
+  "S": {
+    "plain": {
+      "path": "free_atom_refs/S/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE S 17Jan2003"
+        ],
+        "sha256": "a5e7ec2d37a17f7056061379dde737b4e613ce30d70d42da2075391067fd2dbc"
+      }
+    }
+  },
+  "Sb": {
+    "plain": {
+      "path": "free_atom_refs/Sb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Sb 06Sep2000"
+        ],
+        "sha256": "2610838d7da32a5b456683ba5a68f967602f8559f982eb9d488540eeee22bdd8"
+      }
+    }
+  },
+  "Sc": {
+    "plain": {
+      "path": "free_atom_refs/Sc/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Sc_sv 07Sep2000"
+        ],
+        "sha256": "fe25bede3ea075c2400fde9983c5067db653edfb5b8604b59df7f243689210f6"
+      }
+    }
+  },
+  "Se": {
+    "plain": {
+      "path": "free_atom_refs/Se/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Se 06Sep2000"
+        ],
+        "sha256": "936884c17091ad4e17146c5cb87c9848c73bedabc81c5863ec915c69f729a44a"
+      }
+    }
+  },
+  "Si": {
+    "plain": {
+      "path": "free_atom_refs/Si/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Si 05Jan2001"
+        ],
+        "sha256": "52dbe99da884e0191b2d348dfcc281aaba36e2eacd3019a49d93cf07d84da86b"
+      }
+    }
+  },
+  "Sm": {
+    "plain": {
+      "path": "free_atom_refs/Sm/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Sm_3 07Sep2000"
+        ],
+        "sha256": "c25f3f0d376f4783d788551d93a5b57f6cda1874351a2ab79745fd43f58e83d1"
+      }
+    }
+  },
+  "Sn": {
+    "plain": {
+      "path": "free_atom_refs/Sn/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Sn_d 06Sep2000"
+        ],
+        "sha256": "42c58deaa3ad13d5a7687ceb1ce19042050be5dc6a50dd213d398515fb11d1cb"
+      }
+    }
+  },
+  "Sr": {
+    "plain": {
+      "path": "free_atom_refs/Sr/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Sr_sv 07Sep2000"
+        ],
+        "sha256": "3786bef0e4d22859e3fe6bdde6adf3df29f1148053e0245b3f4dbc676e0484aa"
+      }
+    }
+  },
+  "Ta": {
+    "plain": {
+      "path": "free_atom_refs/Ta/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ta_pv 07Sep2000"
+        ],
+        "sha256": "280ec81a80660b2f4559b80b5f63c252165e124f68b001b2cba8b58acf77d333"
+      }
+    }
+  },
+  "Tb": {
+    "plain": {
+      "path": "free_atom_refs/Tb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Tb_3 06Sep2000"
+        ],
+        "sha256": "1515022c6a5791f901d273f3aa099eee7741545a4436b6de8922a38d7c7f124b"
+      }
+    }
+  },
+  "Tc": {
+    "plain": {
+      "path": "free_atom_refs/Tc/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Tc_pv 06Sep2000"
+        ],
+        "sha256": "c652bfb8dee586bd552b5c0f9bf0837e3ab5d16dd2b80d00ad0e8ac2cfccf889"
+      }
+    }
+  },
+  "Te": {
+    "plain": {
+      "path": "free_atom_refs/Te/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Te 08Apr2002"
+        ],
+        "sha256": "07f5f88e14de37995430fb2220c76927005b422dd6ade5bed7ac5aa7b230cbaa"
+      }
+    }
+  },
+  "Th": {
+    "plain": {
+      "path": "free_atom_refs/Th/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Th 07Sep2000"
+        ],
+        "sha256": "adb12b093e61eab8d4544c121ec9aee52b19fa8b6c126fa4e397d9c419c17a51"
+      }
+    }
+  },
+  "Ti": {
+    "plain": {
+      "path": "free_atom_refs/Ti/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Ti_pv 07Sep2000"
+        ],
+        "sha256": "11040d163def95cefaad289e4332a99ef3177d55b981889822179dcd4101a81d"
+      }
+    }
+  },
+  "Tl": {
+    "plain": {
+      "path": "free_atom_refs/Tl/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Tl_d 06Sep2000"
+        ],
+        "sha256": "124b0895411d4d1921d161632eefffc0da2b1c292b33df672e0738fee740052d"
+      }
+    }
+  },
+  "Tm": {
+    "plain": {
+      "path": "free_atom_refs/Tm/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Tm_3 06Sep2000"
+        ],
+        "sha256": "2d847591978b23248b794e444d39cc1f2be9276929ea06af02e9b0577649453c"
+      }
+    }
+  },
+  "U": {
+    "plain": {
+      "path": "free_atom_refs/U/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE U 06Sep2000"
+        ],
+        "sha256": "d78f0e91cc6d568c9409d1b8f67587f02d60fd5da319650176ddb892382d5a1c"
+      }
+    }
+  },
+  "V": {
+    "plain": {
+      "path": "free_atom_refs/V/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE V_pv 07Sep2000"
+        ],
+        "sha256": "9e1ab10e5d5a5984362245e4b9299960b81cbfe71b5659cc7979be4a5e995554"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/V/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE V_pv 07Sep2000"
+        ],
+        "sha256": "9e1ab10e5d5a5984362245e4b9299960b81cbfe71b5659cc7979be4a5e995554"
+      }
+    }
+  },
+  "W": {
+    "plain": {
+      "path": "free_atom_refs/W/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE W_pv 06Sep2000"
+        ],
+        "sha256": "d91f01df3138f4bc4749063e32443a39ee4cbd561f6aeb5e00f2fae221f19338"
+      }
+    },
+    "ldau_convention": {
+      "path": "free_atom_refs/W/ldau_convention",
+      "lmaxmix": 4,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE W_pv 06Sep2000"
+        ],
+        "sha256": "d91f01df3138f4bc4749063e32443a39ee4cbd561f6aeb5e00f2fae221f19338"
+      }
+    }
+  },
+  "Xe": {
+    "plain": {
+      "path": "free_atom_refs/Xe/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Xe 07Sep2000"
+        ],
+        "sha256": "f424e2bf64bb8e6a235793e2f8457811b775733f71b499a39f9060499d053bc6"
+      }
+    }
+  },
+  "Y": {
+    "plain": {
+      "path": "free_atom_refs/Y/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Y_sv 06Sep2000"
+        ],
+        "sha256": "2bdcc5d0f163eb433b6e2b9b927e8b359f9ef0299beda1c1bbe5557da21befa1"
+      }
+    }
+  },
+  "Yb": {
+    "plain": {
+      "path": "free_atom_refs/Yb/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Yb_2 06Sep2000"
+        ],
+        "sha256": "5f98077c5255ba70b854d51f5e7446288e149be8f70b25472516c20fba24e245"
+      }
+    }
+  },
+  "Zn": {
+    "plain": {
+      "path": "free_atom_refs/Zn/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Zn 06Sep2000"
+        ],
+        "sha256": "087ee864dfea625074d03cb96bdd9d28fc0f94fa7ef6a6224145e4b581c73432"
+      }
+    }
+  },
+  "Zr": {
+    "plain": {
+      "path": "free_atom_refs/Zr/plain",
+      "lmaxmix": null,
+      "potcar": {
+        "titel": [
+          "TITEL  = PAW_PBE Zr_sv 07Sep2000"
+        ],
+        "sha256": "ae88ffe8f400de1b63843ffaa7ed759dc66fa50e2939df1816907013c4aef6eb"
+      }
+    }
+  }
+}

@@ -1,0 +1,3 @@
+spin_electrafi/trained_models/total_density/*.model_state_dict
+spin_electrafi/trained_models/spin_density/*.ckpt
+augnet/trained_models/*.ckpt

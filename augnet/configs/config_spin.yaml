@@ -1,0 +1,130 @@
+# Spin (mag channel) variant of the default config (configs/config.yaml).
+# Identical architecture/schedule/target recipe; the ONLY change is
+# data.augmentation_channel: mag (plus the wandb "spin" tag).
+#   w64 / max_ell 3 / r_max 6 / correlation 3 backbone
+#   free-atom reference target (stats/paw_ref_freeatom.pt). The file was built
+#     with --mag zero: the mag shift is all zeros and the scale is 1, so the
+#     model predicts the raw physical spin-occupancy matrix in electrons -- no
+#     free-atom subtraction (a free atom is spin-polarized; subtracting its
+#     magnetization would hand every non-magnetic atom a large spurious delta)
+#     and no per-element standardization. Plain MSE on raw mag coefficients
+#     concentrates the gradient on the magnetic minority.
+#   shared element-agnostic head, hybrid-by-L (linear readout for L<=3, CG
+#     coupling above), no gate
+#   plain MSE loss
+# Split / stats / out-dir are set per run on the command line (--split-name,
+# --split-file, --neighbor-stats-file, --out-dir).
+project:
+  base_name: augnet
+  split_name: 1k
+  run_name: auto
+
+  data_dir: ./data
+  out_dir: ./checkpoints
+
+  hpc_data_dir: ./data/mp_full
+  hpc_out_dir: ./augnet_runs/1k
+
+runtime:
+  use_hpc_paths: auto # auto, true, false
+lightning:
+  enabled: true
+  accelerator: auto
+  devices: auto
+  precision: 32
+  log_every_n_steps: 1
+  model_summary_depth: 2
+  inference_speed_warmup_batches: 2
+  save_top_k: 1
+  # A checkpoint after every epoch, plus a mid-epoch periodic_* every 30k steps
+  # as a wall-clock-kill safety net (only the 50k/full splits ever reach it).
+  # No checkpoint is ever deleted; last.ckpt is a rolling pointer to the newest.
+  save_every_epoch: true
+  checkpoint_every_n_steps: 30000
+wandb:
+  enabled: true
+  # Pinned (not "auto", which appends the split and gives one project per split):
+  # runs on every split land here together, distinguished by the split suffix on
+  # the run name.
+  project: augnet-scaling
+  entity: null
+  name: auto
+  tags:
+    - direct-physical
+    - nogate
+    - shared-head
+    - freeatom-delta
+    - lmaxmix-masked
+    - mace
+    - spin
+  mode: online
+
+data:
+  augmentation_channel: mag # total or mag
+  # VASP writes the CHGCAR augmentation occupancies only for L <= LMAXMIX and a
+  # literal 0.0 above that; "auto" recovers each structure's LMAXMIX from its own
+  # CHGCAR and drops the L > LMAXMIX coefficients from the target mask
+  #.
+  lmaxmix_mode: auto
+  lmaxmix_file: null
+  # Free-atom reference (scripts/make_free_atom_ref_stats.py). POTCAR-specific --
+  # never pair with data.potcar_l_channels. Expect one spurious startup warning
+  # about meta.lmaxmix_mode: it does not apply to a scale-1 file.
+  # For the mag channel this file is a zero shift / unit scale (see header), so
+  # data.mag_scale_source would be a no-op and is deliberately not set.
+  stats_file: stats/paw_ref_freeatom.pt
+  split_file: data_splits/datasplits_mpfull2025_1k.json
+  use_split_file_on_hpc: true
+  export_test_predictions: true
+  aug_pred_dir_test: auto
+  strict_split_ids: false
+
+seed: 5
+epochs: 5
+batch_size: 1
+# Parallel data loading: with 0 workers the per-structure CHGCAR read/target
+# computation serializes and starves the GPU. Size to the CPU allocation.
+num_workers: 20
+val_fraction: 0.1
+
+optimizer:
+  lr: 0.01
+  backbone_lr_multiplier: 0.1
+  weight_decay: 0.000001
+  grad_clip: 0.0
+
+loss:
+  # Plain MSE on the (reference-shifted) coefficients. Nothing else.
+  name: mse
+  gate_weight: 0.0 # inert (no gate); the loader requires the key
+
+model:
+  hidden_width: 64
+  max_ell: 3
+  r_max: 6.0
+  num_interactions: 2
+  correlation: 3
+  # auto => read the MEASURED value for this r_max from neighbor_stats_file
+  # (scripts/neighbor_stats.py; passed per split with --neighbor-stats-file).
+  # This divides each atom's summed neighbour messages, so it must match the
+  # split's true mean neighbour count; a float here is honoured verbatim.
+  avg_num_neighbors: auto
+  neighbor_stats_file: null # set per split with --neighbor-stats-file
+  use_tensor_product_for_high_L: true
+  # The shared head has no gates (PAWAugModel refuses head=shared with a gate).
+  use_gate: false
+  # Shared element-agnostic readout: coefficients predicted in projector space,
+  # coupled with parameter-free Clebsch-Gordan. Hybrid-by-L: blocks with L<=3
+  # come from a direct linear readout, only L>=4 through the quadratic coupling
+  # (the variant that beat the per-schema heads).
+  head: shared
+  head_rank: 64
+  head_block_mixing: true
+  head_linear_max_l: 3
+  # Fused GPU kernels ("hybrid" backend): cuEquivariance for the symmetric
+  # contractions + linear layers (needs cuequivariance-ops-torch-cu12 or it
+  # silently falls back ~25x slower), OpenEquivariance for the per-edge
+  # convolution tensor product. Both run on CPU too (slowly) when disabled.
+  enable_cueq: true
+  cueq_layout: mul_ir
+  enable_oeq: true

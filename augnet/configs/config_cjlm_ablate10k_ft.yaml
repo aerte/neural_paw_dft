@@ -1,0 +1,135 @@
+# 10k-step CJLM MoS2 ablation config: fine-tune on the 9-frame dedup train
+# split; test on the 10 held-out
+# dedup frames. epochs 1112 x 9 frames at batch 1 = 10008 optimizer steps, with
+# a periodic checkpoint every 1000 steps so the runner can trace test
+# performance vs steps. Arms sharing this config (all --init-from a ckpt):
+#   ft_full          full model fine-tuned (backbone at 0.1x lr)
+#   ft_head          --freeze-backbone, pretrained head only
+#   ft_freshhead     --freeze-backbone, head re-initialized
+# The scratch arm uses config_cjlm_ablate10k_scratch.yaml (backbone at full lr).
+#
+# The model block reproduces the checkpoint's training config verbatim (full
+# split: w64/l3/r6/c3, shared hybrid-by-L head, no gate, avg_num_neighbors
+# 64.3013250281764 literal) -- --init-from compares these exactly and refuses a
+# mismatch. enable_cueq stays TRUE because the checkpoint's linear/symmetric-
+# contraction parameters are in cueq's fused layout; cueq's torch ops fall back
+# to CPU kernels, just slowly. enable_oeq is FALSE: OpenEquivariance needs a
+# CUDA/HIP JIT. The conv tensor product is weight-free, so the swap is loadable
+# (missing non-parameter buffers are tolerated by --init-from).
+#
+# The stats file is passed with --stats-file. For this dataset that must be
+# stats/paw_ref_freeatom_mosv.pt: same free-atom reference transform the weights
+# were trained under, with Z=42 swapped to the Mo_sv free atom (the CJLM frames
+# are Mo_sv).
+project:
+  base_name: augnet
+  split_name: cjlm_ablate10k
+  run_name: auto
+
+  data_dir: ./data_cjlm_mos2
+  out_dir: ./augnet_runs/cjlm_ablate10k
+
+  hpc_data_dir: ./data_cjlm_mos2
+  hpc_out_dir: ./augnet_runs/cjlm_ablate10k
+
+runtime:
+  # true (not auto): the split JSON is only consulted when is_hpc; locally auto
+  # would fall back to an on-the-fly split with no test set (--eval-only then
+  # aborts). The "hpc" paths above are the same local relative paths.
+  use_hpc_paths: true
+lightning:
+  enabled: true
+  accelerator: auto
+  devices: 1
+  precision: 32
+  log_every_n_steps: 1
+  model_summary_depth: 2
+  inference_speed_warmup_batches: 2
+  save_top_k: 1
+  # periodic_e*_s*.ckpt every 1000 global steps (batch 1 -> 1000 structures);
+  # the runner evals each of them to get the test-vs-steps curve.
+  checkpoint_every_n_steps: 1000
+wandb:
+  # enabled so a logger exists (LearningRateMonitor requires one); the runner
+  # exports WANDB_MODE=disabled, so nothing is uploaded.
+  enabled: true
+  project: auto
+  entity: null
+  name: auto
+  tags:
+    - eval-only
+    - cjlm
+    - shared-head
+    - freeatom-delta
+    - mace
+  mode: disabled
+
+data:
+  # CJLM use Mo_sv, whose physical projector order differs from MP's Mo_pv. Same
+  # schema (138), different ordering -- reconciled at read time. Without this the
+  # coefficients would be silently permuted. Must match the --l-channels the
+  # stats file was built with (recorded in its meta).
+  potcar_l_channels:
+    Mo: [0, 0, 1, 1, 2, 2]
+  augmentation_channel: total
+  # The 1H/1T frames were run at LMAXMIX=4 (vasprun.xml, not the INCAR), so
+  # their Mo L=3/4 blocks are genuine and auto correctly masks nothing (CSV
+  # lmaxmix=-1); only the ts_ duplicates are LMAXMIX=2-truncated, and none are
+  # in this test split.
+  lmaxmix_mode: auto
+  lmaxmix_file: null
+  # Passed with --stats-file. No default that silently works: the wrong file
+  # shifts every physical-space metric.
+  stats_file: null
+  split_file: ./data_splits/datasplits_cjlm_mos2_dedup.json
+  use_split_file_on_hpc: true
+  export_test_predictions: true
+  aug_pred_dir_test: auto
+  strict_split_ids: false
+
+seed: 5
+# 1112 x 9 train frames at batch 1 = 10008 steps; the s0010000 periodic
+# checkpoint is the 10k-step measurement point.
+epochs: 1112
+batch_size: 1
+# Parallel data-loading workers; size to the CPU allocation.
+num_workers: 7
+val_fraction: 0.1
+
+optimizer:
+  lr: 0.01
+  backbone_lr_multiplier: 0.1
+  weight_decay: 0.000001
+  grad_clip: 0.0
+
+loss:
+  name: mse
+  delta: 1.0
+  gate_weight: 0.01
+  gate_threshold: 0.000001
+  moment_reg_enabled: true
+  moment_lambda_tr1: 0.05
+  moment_lambda_tr2: 0.02
+  moment_eps: 0.000001
+
+model:
+  hidden_width: 64
+  max_ell: 3
+  r_max: 6.0
+  num_interactions: 2
+  correlation: 3
+  # Literal from the checkpoint's hyper_parameters (full-split neighbor stats);
+  # --init-from compares it exactly.
+  avg_num_neighbors: 64.3013250281764
+  neighbor_stats_file: null
+  use_tensor_product_for_high_L: true
+  use_gate: false
+  gate_mode: standardized
+  head: shared
+  head_rank: 64
+  head_block_mixing: true
+  head_linear_max_l: 3
+  # Hybrid GPU backend, same as the checkpoint was trained with.
+  enable_cueq: true
+  cueq_layout: mul_ir
+  enable_oeq: true
