@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neural_init"
+version = "0.1.0"
+description = "Complete neural electronic initialization for VASP: spin-ELECTRAFI densities, AugNet augmentation occupancies, CHGNet moments, and VASP input preparation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # Deep-learning core. torch is deliberately not pinned to a CUDA build:
+    # install the wheel matching your CUDA first, everything below accepts any torch>=2.4.1.
+    "torch>=2.4.1",
+    "lightning>=2.4",
+    "e3nn==0.4.4",              # pinned by mace-torch; also provides o3._spherical_harmonics used by EScAIP
+    "mace-torch==0.3.16",
+    "torch-geometric>=2.5",     # pure python (Data/Batch, sort_edge_index)
+    "pykeops>=2.3",             # ELECTRAFI Gaussian -> reciprocal-space reduction; JIT-compiles at first use
+    "cuequivariance>=0.2.0",    # AugNet checkpoints are stored in cuEquivariance module layout
+    "cuequivariance-torch>=0.2.0",
+    "chgnet>=0.4.2",
+    # Materials / IO
+    "numpy",
+    "scipy",
+    "ase>=3.23",
+    "pymatgen>=2024.9.10",
+    "lz4>=4",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+train = ["wandb", "torchmetrics", "prettytable", "tqdm", "plotly", "dill"]
+cueq-cuda = ["cuequivariance-ops-torch-cu12"]     # fused CUDA kernels; CPU fallback without it
+oeq = ["openequivariance>=0.6.0"]                # needs torch>=2.7 + nvcc; weights load with enable_oeq=false
+mp = ["mp-api>=0.46", "pandas", "python-dotenv"] # Materials Project source, harvest and data_prep scripts
+dev = ["pytest", "ruff", "build"]
+
+[project.scripts]
+ndi = "neural_init.pipeline.cli:main"
+ndi-augnet-train = "neural_init.augnet.train_augnet:main"
+ndi-electrafi-train = "neural_init.spin_electrafi.train:run"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+include = ["neural_init*"]
+
+[tool.setuptools.package-data]
+"neural_init.augnet" = ["stats/*.pt", "stats/*.json", "configs/*.yaml", "data_splits/*.json"]
+"neural_init.spin_electrafi" = ["*.yaml", "configs/*.yaml", "data_splits/*.json"]
+"neural_init.spin_electrafi.model.escaip" = ["*.yaml", "LICENSE.fairchem", "LICENSE.e3nn"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
