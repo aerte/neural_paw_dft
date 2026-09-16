@@ -8,10 +8,32 @@ import math
 import os
 import time
 
-import lightning as L
 import numpy as np
 import torch
 import torch.nn as nn
+
+try:
+    import lightning as L
+
+    _ModuleBase = L.LightningModule
+except ImportError:  # inference-only install: Lightning is in the `train` extra
+
+    class _ModuleBase(nn.Module):
+        """Just enough of LightningModule for ELECTRAFI.forward: device/step bookkeeping and no-op logging."""
+
+        global_step = 0
+        current_epoch = 0
+
+        @property
+        def device(self) -> torch.device:
+            p = next(self.parameters(), None)
+            return p.device if p is not None else torch.device("cpu")
+
+        def log(self, *args, **kwargs):
+            pass
+
+        def log_dict(self, *args, **kwargs):
+            pass
 import torch.nn.functional as F
 from ase import Atoms
 from ase.data import chemical_symbols
@@ -36,7 +58,7 @@ logger = logging.getLogger(__file__)
 
 
 
-class ELECTRAFI(L.LightningModule):
+class ELECTRAFI(_ModuleBase):
     __version__ = 1
 
     def __init__(

@@ -11,7 +11,7 @@ from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA
 from neural_paw_dft.augnet.run_paw_chgcar import predicted_aug_blocks_text
 from neural_paw_dft.pipeline import assemble
 from neural_paw_dft.pipeline.config import VaspConfig
-from neural_paw_dft.vasp_runner.chgcar import read_spin_moment_line, _dims_line
+from neural_paw_dft.vasp_runner.chgcar import read_spin_moment_line, dims_line
 
 AUG_HDR = re.compile(r"^augmentation occupancies\s*(\d+)\s*(\d+)$")
 
@@ -60,7 +60,7 @@ def test_build_chgcar_roundtrip(tmp_path):
         assert ln == f"augmentation occupancies{int(m[1]):4d}{int(m[2]):4d}"
 
     # per-ion moment block sits right before the spin grid and holds our values
-    lines = read_spin_moment_line(str(out), _dims_line(chg), len(s))
+    lines = read_spin_moment_line(str(out), dims_line(chg), len(s))
     assert lines is not None and len(lines) == -(-len(s) // 5)
     np.testing.assert_allclose([float(x) for x in " ".join(lines).split()], moments, rtol=1e-9)
 
@@ -71,7 +71,7 @@ def test_build_chgcar_total_only_no_moment_block(tmp_path):
     out = assemble.build_chgcar(s, rho, None, _aug(s, 4), None, None, tmp_path / "CHGCAR")
     chg = Chgcar.from_file(str(out))
     assert not chg.is_spin_polarized and "diff" not in chg.data
-    assert read_spin_moment_line(str(out), _dims_line(chg), len(s)) is None
+    assert read_spin_moment_line(str(out), dims_line(chg), len(s)) is None
 
 
 def test_build_chgcar_rejects_wrong_block_length(tmp_path):

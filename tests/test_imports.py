@@ -14,6 +14,7 @@ MODULES = [
     "neural_paw_dft.vasp_runner.relaxmag",
     "neural_paw_dft.augnet.augnet_model",
     "neural_paw_dft.augnet.paw_basis_transform",
+    "neural_paw_dft.augnet.model",
     "neural_paw_dft.augnet.train_augnet",
     "neural_paw_dft.spin_electrafi.model.escaip.utils.fairchem_graph",
     "neural_paw_dft.spin_electrafi.model.escaip.utils.smearing",
@@ -30,8 +31,9 @@ def test_import(mod):
 
 def test_no_fairchem_or_torch_scatter_needed():
     code = (
-        "import sys, neural_paw_dft.spin_electrafi.model.ELECTRAFI;"
-        "assert 'fairchem' not in sys.modules and 'torch_scatter' not in sys.modules"
+        "import sys, neural_paw_dft.spin_electrafi.model.ELECTRAFI, neural_paw_dft.pipeline.augnet;"
+        "assert 'fairchem' not in sys.modules and 'torch_scatter' not in sys.modules;"
+        "assert 'neural_paw_dft.augnet.train_augnet' not in sys.modules  # inference must not import the trainer"
     )
     subprocess.run([sys.executable, "-c", code], check=True, cwd="/")
 

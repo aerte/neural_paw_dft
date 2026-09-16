@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 import argparse
-
-from neural_paw_dft import __version__
 import dataclasses
 import sys
+
+from neural_paw_dft import __version__
 
 from .config import config_template, load_config
 
@@ -31,7 +31,10 @@ def _apply_flags(cfg, args):
     if args.weights_dir:
         cfg = dataclasses.replace(cfg, weights_dir=args.weights_dir)
     if args.no_spin:
-        cfg = dataclasses.replace(cfg, electrafi=dataclasses.replace(cfg.electrafi, spin=False))
+        el = cfg.electrafi
+        # a spin checkpoint would still run its spin head only to have the grid discarded
+        ckpt = "electrafi_total" if el.checkpoint.startswith("electrafi_spin") else el.checkpoint
+        cfg = dataclasses.replace(cfg, electrafi=dataclasses.replace(el, spin=False, checkpoint=ckpt))
     if args.no_chgnet:
         cfg = dataclasses.replace(cfg, chgnet=dataclasses.replace(cfg.chgnet, enabled=False))
     incar = _parse_incar_overrides(getattr(args, "incar", None))
@@ -47,7 +50,7 @@ def _add_common(p):
     p.add_argument("--grid", nargs=3, type=int, metavar=("NGX", "NGY", "NGZ"), help="FFT grid dims")
     p.add_argument("--device", help="cpu | cuda | cuda:N")
     p.add_argument("--weights-dir", help="directory holding the model weights")
-    p.add_argument("--no-spin", action="store_true", help="charge-only seed: the spin grid is not written (the configured ELECTRAFI checkpoint still runs)")
+    p.add_argument("--no-spin", action="store_true", help="charge-only seed: no spin grid, and a registry spin checkpoint is swapped for electrafi_total")
     p.add_argument("--no-chgnet", action="store_true", help="skip CHGNet (no MAGMOM override / spin constraint)")
 
 

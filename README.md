@@ -40,9 +40,10 @@ pip install -e ".[cueq-cuda]"      # + fused cuEquivariance kernels, needed to t
 pip check
 ```
 
-Extras: `train` (wandb, plotly, ...), `cueq` / `cueq-cuda` (cuEquivariance, CPU or with CUDA
-kernels), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc), `mp` (Materials Project API for the
-experiment scripts), `dev` (pytest, ruff, build).
+Extras: `train` (Lightning, wandb, plotly, ...; inference needs none of it), `cueq` / `cueq-cuda`
+(cuEquivariance, CPU or with CUDA kernels), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc), `mp`
+(Materials Project API for the experiment scripts), `examples` (Jupyter, matplotlib, plotly for the demo
+notebook), `dev` (pytest, ruff, build).
 
 Notes on the dependency set:
 
@@ -96,8 +97,9 @@ POTCAR library is configured), then the `CHGCAR`, then
 calculation. The FFT grid comes from, in order: `grid_dims` / `--grid`, a CHGCAR input,
 `NGXF/NGYF/NGZF` in `incar_overrides`, or, if `vasp.vasp_cmd` is set, a one-step VASP dry run.
 
-Both subcommands also take `--device`, `--weights-dir`, `--no-spin` (skip writing the spin grid) and
-`--no-chgnet`; `build` additionally takes `--incar KEY=VAL ...` for INCAR overrides applied last.
+Both subcommands also take `--device`, `--weights-dir`, `--no-spin` and `--no-chgnet`; `build` additionally
+takes `--incar KEY=VAL ...` for INCAR overrides applied last. `--no-spin` writes a charge-only seed and, when
+the configured ELECTRAFI checkpoint is one of the registry spin models, swaps it for `electrafi_total`.
 
 Python:
 
@@ -115,11 +117,15 @@ sum (the paper's convention). Set `chgnet.enabled: false` or `--no-chgnet` to sk
 ## Example notebook
 
 `examples/demo.ipynb` runs the whole thing on bcc Fe on CPU: CHGNet moments, ELECTRAFI grids,
-AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/`. It needs `jupyter`, `matplotlib`
-and `plotly` on top of the package.
+AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/` (`pip install -e ".[examples]"`).
 
 ## Tests
 
 ```bash
-pytest tests/                 # writer / input / config tests need no weights; checkpoint tests skip without them
+pytest tests/                              # writer / input / config / CLI tests need no weights
+NDI_TEST_DOWNLOAD_WEIGHTS=1 pytest tests/  # also fetch the weights from the Hub and run the model tests
 ```
+
+The model tests skip when the weights are not in the weights directory unless
+`NDI_TEST_DOWNLOAD_WEIGHTS=1` is set, in which case they are downloaded first (the CI workflow does this
+when an `HF_TOKEN` secret with access to the weights repo is configured).

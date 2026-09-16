@@ -12,9 +12,9 @@ from pymatgen.io.vasp.outputs import Chgcar
 
 from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA
 from neural_paw_dft.vasp_runner.chgcar import (
-    _dims_line,
-    _rewrite_aug_headers,
-    _splice_spin_moment_line,
+    dims_line,
+    rewrite_aug_headers,
+    splice_spin_moment_line,
     get_chgcar_grid_dims_textparse,
 )
 from neural_paw_dft.vasp_runner.relaxmag import apply_relaxed_magmom
@@ -82,9 +82,9 @@ def build_chgcar(
     chg = Chgcar(Poscar(structure), data, data_aug=data_aug)
     chg.is_spin_polarized = spin  # pymatgen fixes this at construction; make it explicit
     chg.write_file(str(out_path))
-    _rewrite_aug_headers(str(out_path))  # VASP's fixed-width header, or it silently ignores the file
+    rewrite_aug_headers(str(out_path))  # VASP's fixed-width header, or it silently ignores the file
     if spin:
-        ok = _splice_spin_moment_line(str(out_path), _dims_line(chg), synth_moment_lines(site_moments, n))
+        ok = splice_spin_moment_line(str(out_path), dims_line(chg), synth_moment_lines(site_moments, n))
         if not ok:
             raise RuntimeError(f"could not locate the spin grid header in {out_path}")
     return out_path
@@ -164,7 +164,7 @@ def dry_run_grid_dims(structure: Structure, vasp: VaspConfig, work_dir: str | os
     return get_chgcar_grid_dims_textparse(str(chgcar))
 
 
-def grid_dims_from_incar(structure: Structure, incar: Incar) -> tuple[int, int, int] | None:
+def grid_dims_from_incar(incar: Incar) -> tuple[int, int, int] | None:
     """NGXF/NGYF/NGZF if the INCAR sets them explicitly."""
     if all(k in incar for k in ("NGXF", "NGYF", "NGZF")):
         return int(incar["NGXF"]), int(incar["NGYF"]), int(incar["NGZF"])

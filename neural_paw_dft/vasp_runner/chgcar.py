@@ -5,7 +5,7 @@ import shutil
 import tempfile
 
 import lz4.frame
-from ase.io.vasp import read_vasp
+import numpy as np
 
 
 # --noisemag diff-grid noise bounds: values are drawn log-uniformly in
@@ -14,20 +14,6 @@ from ase.io.vasp import read_vasp
 # --zeromag (a symmetry-broken but still near-zero magnetization seed).
 NOISE_MAG_LO = 1e-7
 NOISE_MAG_HI = 1e-5
-
-
-def atoms_from_chgcar(chgcar_path):
-    """Load an ASE Atoms from a CHGCAR or CHGCAR.lz4 (structure only)."""
-    if chgcar_path.endswith(".lz4"):
-        tmpfd, tmppath = tempfile.mkstemp(prefix="tmp_chgcar_")
-        os.close(tmpfd)
-        with lz4.frame.open(chgcar_path, "rb") as src, open(tmppath, "wb") as dst:
-            shutil.copyfileobj(src, dst)
-        atoms = read_vasp(tmppath)
-        os.remove(tmppath)
-    else:
-        atoms = read_vasp(chgcar_path)
-    return atoms
 
 
 def get_chgcar_grid_dims_textparse(chgcar_path):
@@ -73,14 +59,52 @@ def get_chgcar_grid_dims_textparse(chgcar_path):
     return nx, ny, nz
 
 
-def get_chgcar_grid_dims_pymatgen(chgcar_path):
-    """Parse (NGXF, NGYF, NGZF) using pymatgen's Chgcar.from_file."""
-    # Local import to avoid the spglib-bug import path before patching.
-    from pymatgen.io.vasp.outputs import Chgcar
-    from .ml_blend import _get_chgcar_dim
+def get_chgcar_dim(chg):
+    """Robust (nx, ny, nz) for a Chgcar across pymatgen versions."""
+    dim = getattr(chg, "dim", None)
+    if dim is not None:
+        dim = tuple(dim)
+        if len(dim) == 3:
+            return dim
 
-    chg = Chgcar.from_file(chgcar_path)
-    return _get_chgcar_dim(chg)
+    data = chg.data
+    if isinstance(data, dict) and len(data) > 0:
+        arr = np.asarray(next(iter(data.values())))
+    else:
+        arr = np.asarray(data)
+    if arr.ndim != 3:
+        raise RuntimeError(f"Expected 3D grid, got shape {arr.shape}")
+    return tuple(arr.shape)
+
+
+def _rescale_ml_to_true_charge(ml_grid, true_chg):
+    """Rescale ml_grid so its integrated charge matches true_chg."""
+    from pymatgen.electronic_structure.core import Spin
+
+    data = true_chg.data
+    if isinstance(data, dict):
+        if (Spin.up in data) and (Spin.down in data):
+            true_tot = np.asarray(data[Spin.up]) + np.asarray(data[Spin.down])
+        elif "total" in data:
+            true_tot = np.asarray(data["total"])
+        else:
+            true_tot = np.asarray(next(iter(data.values())))
+    else:
+        true_tot = np.asarray(data)
+
+    dim = true_tot.shape
+    assert ml_grid.shape == dim, f"ML grid shape {ml_grid.shape} != template shape {dim}"
+
+    cell_vol = true_chg.structure.lattice.volume
+    npoints = int(dim[0] * dim[1] * dim[2])
+    dv = cell_vol / npoints
+
+    q_true = true_tot.sum() * dv
+    q_ml = ml_grid.sum() * dv
+    if q_ml == 0:
+        raise RuntimeError("ML grid has zero integrated charge, cannot rescale")
+    scale = q_true / q_ml
+    return ml_grid * scale
 
 
 def _renorm_grid_to_ref(ml_grid, ref_chg, label: str):
@@ -93,15 +117,13 @@ def _renorm_grid_to_ref(ml_grid, ref_chg, label: str):
 
     Purely multiplicative — it fixes the integrated charge, not the shape.
     """
-    from .ml_blend import _rescale_ml_to_true_charge
-
     scaled = _rescale_ml_to_true_charge(ml_grid, ref_chg)
     scale = float(scaled.sum() / ml_grid.sum()) if ml_grid.sum() else float("nan")
     print(f"[renorm] {label}: scaling predicted grid by {scale:.6f}")
     return scaled
 
 
-def _dims_line(chg) -> str:
+def dims_line(chg) -> str:
     """The 'NGX NGY NGZ' grid header exactly as pymatgen's write_file emits it.
 
     Each density channel is preceded by one of these, so counting occurrences
@@ -114,7 +136,7 @@ def _dims_line(chg) -> str:
 _AUG_HDR = re.compile(r"^\s*augmentation occupancies\s+(\d+)\s+(\d+)\s*$")
 
 
-def _rewrite_aug_headers(path: str) -> int:
+def rewrite_aug_headers(path: str) -> int:
     """Re-emit every ``augmentation occupancies`` header in VASP's own spelling.
 
     VASP right-aligns both integers in width 4; pymatgen's writer pads one space
@@ -183,7 +205,7 @@ def read_spin_moment_line(src_path: str, dims_line: str, n_ions: int):
     return None
 
 
-def _splice_spin_moment_line(path: str, dims_line: str,
+def splice_spin_moment_line(path: str, dims_line: str,
                              moment_lines: list) -> bool:
     """Insert ``moment_lines`` immediately before the second grid header of the
     CHGCAR at ``path``, in place. Returns True if they were inserted."""
@@ -228,20 +250,20 @@ def write_chgcar(chg, out_path: str, moment_src: str) -> bool:
     chg.write_file(out_path)
     # Applies to every rebuilt CHGCAR, spin-polarized or not: a total-only seed
     # carries augmentation headers too and VASP rejects it just the same.
-    _rewrite_aug_headers(out_path)
+    rewrite_aug_headers(out_path)
     if not chg.is_spin_polarized:
         return False
 
-    dims_line = _dims_line(chg)
-    moment_lines = read_spin_moment_line(moment_src, dims_line,
+    dl = dims_line(chg)
+    moment_lines = read_spin_moment_line(moment_src, dl,
                                          chg.structure.num_sites)
     if moment_lines is None:
         raise RuntimeError(
             f"moment_src={moment_src} has no per-ion moment block for grid "
-            f"{dims_line.strip()}; refusing to write a spin-polarized CHGCAR "
+            f"{dl.strip()}; refusing to write a spin-polarized CHGCAR "
             f"whose spin channel VASP would ignore."
         )
-    if not _splice_spin_moment_line(out_path, dims_line, moment_lines):
+    if not splice_spin_moment_line(out_path, dl, moment_lines):
         raise RuntimeError(
             f"could not locate the spin grid header in {out_path}; "
             f"the per-ion moment block was not restored."
@@ -637,7 +659,7 @@ def build_total_only_chgcar(src: str, out_path: str, spin: str = "none",
     write_chgcar(chg, out_path, src)
 
 
-def _aug_dict_from_npz(npz_path: str, structure, ref_aug: dict):
+def aug_dict_from_npz(npz_path: str, structure, ref_aug: dict):
     """Build a pymatgen ``data_aug`` channel dict ``{atom_idx: np.ndarray}``
     from an ML-prediction ``.npz`` (keys ``atomic_numbers``,
     ``aug_sanvito_padded`` (n_atoms, P), ``mask`` (n_atoms, P)).
@@ -776,7 +798,7 @@ def build_ml_grid_ml_aug_chgcar(grid_src: str, aug_ref_src: str,
             f"dict; cannot size or validate the predicted augmentation blocks."
         )
 
-    total_dict = _aug_dict_from_npz(total_aug_npz, ref_chg.structure,
+    total_dict = aug_dict_from_npz(total_aug_npz, ref_chg.structure,
                                     ref_aug["total"])
 
     total = grid_chg.data["total"]
@@ -841,7 +863,7 @@ def build_ml_aug_chgcar(grid_src: str, total_aug_npz: str, out_path: str,
 
     new_aug = dict(ref_aug)
     if total_aug_npz is not None:
-        total_dict = _aug_dict_from_npz(total_aug_npz, chg.structure, ref_aug["total"])
+        total_dict = aug_dict_from_npz(total_aug_npz, chg.structure, ref_aug["total"])
         new_aug["total"] = total_dict
 
     if magnetic_aug_npz is not None:
@@ -850,7 +872,7 @@ def build_ml_aug_chgcar(grid_src: str, total_aug_npz: str, out_path: str,
                 f"grid_src={grid_src} has no 'diff' augmentation channel to "
                 f"replace, but magnetic_aug_npz={magnetic_aug_npz} was given."
             )
-        new_aug["diff"] = _aug_dict_from_npz(
+        new_aug["diff"] = aug_dict_from_npz(
             magnetic_aug_npz, chg.structure, ref_aug["diff"]
         )
 

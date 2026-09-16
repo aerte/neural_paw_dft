@@ -1,7 +1,9 @@
 """ELECTRAFI inference: structure -> total (+ spin) density grid in e/Å^3."""
 from __future__ import annotations
 
+import atexit
 import re
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -23,6 +25,18 @@ _PATH_KEYS = (
     "pred_dens_path_val", "pred_dens_path_test", "density_delta_path_val", "density_delta_path_test",
     "gaus_pos_path_val", "gaus_pos_path_test", "gaus_pos_outlier_path",
 )
+
+
+_WORK_DIR: Path | None = None
+
+
+def _work_dir() -> Path:
+    """One scratch dir per process for the output paths ELECTRAFI.__init__ insists on; removed at exit."""
+    global _WORK_DIR
+    if _WORK_DIR is None or not _WORK_DIR.is_dir():
+        _WORK_DIR = Path(tempfile.mkdtemp(prefix="ndi_electrafi_"))
+        atexit.register(shutil.rmtree, _WORK_DIR, ignore_errors=True)
+    return _WORK_DIR
 
 
 def _train_config_path(cfg: ElectrafiConfig, ckpt: Path) -> Path:
@@ -95,8 +109,7 @@ def load_electrafi(cfg: ElectrafiConfig, device: torch.device, n_atoms: int = 15
     if cfg.spin and not has_spin_head:
         raise ValueError(f"{ckpt.name} is a charge-only model; set electrafi.spin: false or pick a spin checkpoint")
 
-    work_dir = Path(tempfile.mkdtemp(prefix="ndi_electrafi_"))
-    config = build_inference_config(cfg, ckpt, has_spin_head, work_dir, n_atoms, num_layers)
+    config = build_inference_config(cfg, ckpt, has_spin_head, _work_dir(), n_atoms, num_layers)
     model = ELECTRAFI(train_files=[], test_files=[], validation_files=[], model_handler=None, config=config)
     model.load_state_dict(state, strict=True)
     model.to(device).eval()

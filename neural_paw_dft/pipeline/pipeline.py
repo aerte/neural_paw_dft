@@ -44,6 +44,7 @@ class Pipeline:
     def __init__(self, config: PipelineConfig | None = None):
         self.cfg = config or PipelineConfig()
         self.device = resolve_device(self.cfg.device)
+        torch.set_float32_matmul_precision(self.cfg.matmul_precision)
         self._electrafi = None
         self._augnet: dict[str, AugNetPredictor] = {}
         self._chgnet = None
@@ -141,7 +142,7 @@ class Pipeline:
         nelect = inputs.nelect_for(structure, potcar if potcar.is_file() else None)
         lmaxmix = int(incar.get("LMAXMIX", 2))
 
-        grid_dims = self.cfg.grid_dims or inp.grid_dims or assemble.grid_dims_from_incar(structure, incar)
+        grid_dims = self.cfg.grid_dims or inp.grid_dims or assemble.grid_dims_from_incar(incar)
         if grid_dims is None:
             if not self.cfg.vasp.vasp_cmd:
                 raise ValueError(
@@ -161,7 +162,7 @@ class Pipeline:
     # ---------- outputs ----------
     def save_prediction(self, pred: Prediction, out_dir: str | os.PathLike, name: str = "structure") -> Path:
         """Grids as .npy and augmentation as .npz in the AugNet export layout
-        (readable by vasp_runner.chgcar._aug_dict_from_npz)."""
+        (readable by ``vasp_runner.chgcar.aug_dict_from_npz``)."""
         out_dir = Path(out_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
         np.save(out_dir / "rho_total.npy", pred.rho_total)

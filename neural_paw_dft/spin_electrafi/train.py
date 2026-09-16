@@ -4,12 +4,16 @@ import os
 import warnings
 import yaml
 import torch
-import wandb
 from neural_paw_dft._resources import resolve_data_path
-import lightning as L
-from lightning.pytorch.loggers import WandbLogger
-from lightning.pytorch.callbacks import ModelCheckpoint
-from lightning.pytorch import seed_everything
+
+try:
+    import wandb
+    import lightning as L
+    from lightning.pytorch.loggers import WandbLogger
+    from lightning.pytorch.callbacks import ModelCheckpoint
+    from lightning.pytorch import seed_everything
+except ImportError as e:  # pragma: no cover
+    raise ImportError("training ELECTRAFI needs the `train` extra: pip install 'neural_paw_dft[train]'") from e
 
 from neural_paw_dft.spin_electrafi.utils.model_handling import ModelIO, get_tag
 from neural_paw_dft.spin_electrafi.utils.train_helper_funcs import set_all_seeds, set_all_paths, get_files, get_files_ood

@@ -15,9 +15,9 @@ from neural_paw_dft.augnet.paw_basis_transform import (
     sanvito_schema_and_lmaxmix_masks,
 )
 from neural_paw_dft.augnet.paw_stats import PAWStats
-from neural_paw_dft.augnet.train_augnet import (
+from neural_paw_dft.augnet.model import (
     PAWAugModel,
-    _atomic_data_from_item,
+    atomic_data_from_item,
     build_cueq_config,
     build_oeq_config,
     dict_to_namespace,
@@ -116,7 +116,7 @@ class AugNetPredictor:
             "cell": torch.tensor(structure.lattice.matrix, dtype=torch.float64),
             "pbc": torch.tensor([True, True, True]),
         }
-        batch = Batch.from_data_list([_atomic_data_from_item(item, self.z_table, self.r_max)])
+        batch = Batch.from_data_list([atomic_data_from_item(item, self.z_table, self.r_max)])
         n = int(z.shape[0])
         if "batch" not in batch:
             batch["batch"] = torch.zeros(n, dtype=torch.long)

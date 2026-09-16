@@ -1,4 +1,4 @@
-"""Structure / CHGCAR input handling, NELECT and LMAXMIX lookups."""
+"""Structure / CHGCAR input handling and NELECT lookup."""
 from __future__ import annotations
 
 import os
@@ -8,7 +8,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pymatgen.core import Structure
-from pymatgen.io.vasp.inputs import Incar
 
 from neural_paw_dft.augnet.mp_potcar_map import MP_POTCAR_BY_Z
 
@@ -31,7 +30,7 @@ def load_input(path: str | os.PathLike) -> StructureInput:
     if _is_chgcar(path):
         from pymatgen.io.vasp.outputs import Chgcar
 
-        from neural_paw_dft.vasp_runner.ml_blend import _get_chgcar_dim
+        from neural_paw_dft.vasp_runner.chgcar import get_chgcar_dim
 
         src = path
         tmp = None
@@ -48,7 +47,7 @@ def load_input(path: str | os.PathLike) -> StructureInput:
         finally:
             if tmp:
                 os.remove(tmp)
-        return StructureInput(chg.structure, tuple(int(x) for x in _get_chgcar_dim(chg)), str(path))
+        return StructureInput(chg.structure, tuple(int(x) for x in get_chgcar_dim(chg)), str(path))
 
     try:
         structure = Structure.from_file(str(path))
@@ -77,7 +76,3 @@ def nelect_for(structure: Structure, potcar_path: str | os.PathLike | None = Non
         raise KeyError(f"no MP POTCAR entry for {missing}; the models do not cover these elements")
     return float(sum(MP_POTCAR_BY_Z[site.specie.Z]["zval"] for site in structure))
 
-
-def read_lmaxmix(incar_path: str | os.PathLike) -> int:
-    """LMAXMIX from an INCAR (VASP default 2)."""
-    return int(Incar.from_file(str(incar_path)).get("LMAXMIX", 2))

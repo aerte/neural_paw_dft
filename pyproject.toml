@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "neural_paw_dft"
 dynamic = ["version"]
 description = "Complete neural electronic initialization for VASP: spin-ELECTRAFI densities, AugNet augmentation occupancies, CHGNet moments, and VASP input preparation"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "CC-BY-NC-4.0"
+license-files = ["LICENSE"]
 authors = [{ name = "aerte", email = "felar@dtu.dk" }]
 requires-python = ">=3.10"
 classifiers = [
@@ -24,7 +25,6 @@ dependencies = [
     # Deep-learning core. torch is deliberately not pinned to a CUDA build:
     # install the wheel matching your CUDA first, everything below accepts any torch>=2.4.1.
     "torch>=2.4.1",
-    "lightning>=2.4",
     "e3nn==0.4.4",              # pinned by mace-torch; also provides o3._spherical_harmonics used by EScAIP
     "mace-torch==0.3.16",
     "torch-geometric>=2.5",     # pure python (Data/Batch, sort_edge_index)
@@ -41,7 +41,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-train = ["wandb", "torchmetrics", "prettytable", "tqdm", "plotly", "dill"]
+train = ["lightning>=2.4", "wandb", "torchmetrics", "prettytable", "tqdm", "plotly", "dill"]
+examples = ["jupyter", "matplotlib", "plotly"]  # examples/demo.ipynb
 # The published safetensors are in plain e3nn layout; cuEquivariance is only needed to train AugNet
 # or to load the original Lightning .ckpt files, which are stored in cuEquivariance module layout.
 cueq = ["cuequivariance>=0.2.0", "cuequivariance-torch>=0.2.0"]
