@@ -8,10 +8,10 @@ from pymatgen.core import Lattice, Structure
 from pymatgen.io.vasp.inputs import Incar, Poscar
 from pymatgen.io.vasp.outputs import Chgcar
 
-from neural_init.augnet.augnet_model import Z_TO_SCHEMA
-from neural_init.models import REGISTRY, weights_dir
-from neural_init.pipeline import Pipeline, PipelineConfig
-from neural_init.pipeline.config import ElectrafiConfig
+from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA
+from neural_paw_dft.models import REGISTRY, weights_dir
+from neural_paw_dft.pipeline import Pipeline, PipelineConfig
+from neural_paw_dft.pipeline.config import ElectrafiConfig
 
 W = weights_dir()
 NEEDED = ["electrafi_spin_constrained", "electrafi_total", "augnet_total_full", "augnet_spin_full"]
@@ -76,7 +76,7 @@ def test_predict_charge_only_nacl(tmp_path):
     assert npz["aug_sanvito_padded"].shape == (2, 390)
     assert npz["schema_mask"][0].sum() == Z_TO_SCHEMA[11] and npz["schema_mask"][1].sum() == Z_TO_SCHEMA[17]
     # the npz is readable by the experiment code's loader
-    from neural_init.vasp_runner.chgcar import _aug_dict_from_npz
+    from neural_paw_dft.vasp_runner.chgcar import _aug_dict_from_npz
 
     ref = {i + 1: np.zeros(Z_TO_SCHEMA[s.specie.Z]) for i, s in enumerate(pred.structure)}
     blocks = _aug_dict_from_npz(str(out / "structure_total_aug.npz"), pred.structure, ref)

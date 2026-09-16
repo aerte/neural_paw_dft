@@ -1,6 +1,6 @@
-> **Moved.** The code now lives in the installable package `neural_init.augnet`; install with
+> **Moved.** The code now lives in the installable package `neural_paw_dft.augnet`; install with
 > `pip install -e ".[train]"` from the repository root (see the root README). The commands below run from
-> this directory and refer to packaged data as `neural_init/augnet/{configs,stats,data_splits}`;
+> this directory and refer to packaged data as `neural_paw_dft/augnet/{configs,stats,data_splits}`;
 > checkpoints live in `trained_models/augnet/`.
 
 # AugNet — PAW augmentation-charge prediction with a MACE backbone

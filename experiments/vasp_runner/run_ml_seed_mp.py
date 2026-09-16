@@ -36,15 +36,15 @@ from pymatgen.io.vasp.inputs import Incar
 from pymatgen.io.vasp.outputs import Outcar
 
 import scf_stats
-from neural_init.vasp_runner.chgcar import (build_ml_aug_chgcar,
+from neural_paw_dft.vasp_runner.chgcar import (build_ml_aug_chgcar,
                                 build_total_pseudo_grid_chgcar,
                                 get_chgcar_grid_dims_textparse)
-from neural_init.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
-from neural_init.vasp_runner.spin_npy import index_spin_dir
-from neural_init.vasp_runner.sources.mp import derive_mpid, write_mp_inputs_for_mpid, MissingMPTaskDocError
-from neural_init.vasp_runner import runs_db, results
-from neural_init.vasp_runner.failsafe import run_guarded, watchdog
-from neural_init.vasp_runner.scf import prune_workdir_keep_outputs
+from neural_paw_dft.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
+from neural_paw_dft.vasp_runner.spin_npy import index_spin_dir
+from neural_paw_dft.vasp_runner.sources.mp import derive_mpid, write_mp_inputs_for_mpid, MissingMPTaskDocError
+from neural_paw_dft.vasp_runner import runs_db, results
+from neural_paw_dft.vasp_runner.failsafe import run_guarded, watchdog
+from neural_paw_dft.vasp_runner.scf import prune_workdir_keep_outputs
 
 
 ICHARG = 1
@@ -140,7 +140,7 @@ def run_variant(mpid: str, workdir: str, chgcar_path: str, vasp_cmd,
     elif relax_magmom is not None and not ispin1:
         # Per-site relaxed moments (MP relax-task output) replacing MP's own
         # MAGMOM; see vasp_runner/relaxmag.py.
-        from neural_init.vasp_runner.relaxmag import apply_relaxed_magmom
+        from neural_paw_dft.vasp_runner.relaxmag import apply_relaxed_magmom
         apply_relaxed_magmom(incar, relax_magmom)
     incar.write_file(incar_path)
 
@@ -293,7 +293,7 @@ def main():
 
     relax_map = None
     if args.relaxed_magmoms:
-        from neural_init.vasp_runner.relaxmag import load_relaxed_magmoms
+        from neural_paw_dft.vasp_runner.relaxmag import load_relaxed_magmoms
         relax_map = load_relaxed_magmoms(args.relaxed_magmoms, args.pbe_only)
         print(f"Relaxed magmoms: {len(relax_map)} usable mp-ids from "
               f"{args.relaxed_magmoms} (others keep MP's own MAGMOM)")

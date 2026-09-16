@@ -195,7 +195,7 @@ def clear_variant_rows(runs_db_path: Path, variant: str, dry_run: bool):
     # Import lazily from the repo root (cwd is project_dir here) so the common
     # non-rerun path never needs vasp_runner on the path.
     sys.path.insert(0, os.getcwd())
-    from neural_init.vasp_runner import runs_db
+    from neural_paw_dft.vasp_runner import runs_db
     conn = runs_db.get_connection(runs_db_path)
     try:
         n = conn.execute(

@@ -26,13 +26,13 @@ import wandb
 from pymatgen.io.vasp.inputs import Incar
 from pymatgen.io.vasp.outputs import Outcar
 
-from neural_init.vasp_runner.chgcar import build_aug_swap_chgcar, get_chgcar_grid_dims_textparse
-from neural_init.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
-from neural_init.vasp_runner.sad_extract import extract_sad_chgcar
-from neural_init.vasp_runner.sources.mp import derive_mpid, write_mp_inputs_for_mpid, MissingMPTaskDocError
-from neural_init.vasp_runner import runs_db, results
-from neural_init.vasp_runner.failsafe import run_guarded
-from neural_init.vasp_runner.scf import prune_workdir_keep_outputs
+from neural_paw_dft.vasp_runner.chgcar import build_aug_swap_chgcar, get_chgcar_grid_dims_textparse
+from neural_paw_dft.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
+from neural_paw_dft.vasp_runner.sad_extract import extract_sad_chgcar
+from neural_paw_dft.vasp_runner.sources.mp import derive_mpid, write_mp_inputs_for_mpid, MissingMPTaskDocError
+from neural_paw_dft.vasp_runner import runs_db, results
+from neural_paw_dft.vasp_runner.failsafe import run_guarded
+from neural_paw_dft.vasp_runner.scf import prune_workdir_keep_outputs
 
 
 VARIANT_DEFAULT = "sad_grid_conv_aug"

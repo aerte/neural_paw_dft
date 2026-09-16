@@ -51,9 +51,9 @@ import yaml
 # Bootstrap: repo root (parent of this script's dir) must be importable for
 # the src.* / scripts.* imports below when this file is run directly.
 import os as _os, sys as _sys
-from neural_init.augnet.paw_basis_transform import set_l_channel_overrides, sanvito_to_e3nn_with_basis_padded
-from neural_init.augnet.augnet_model import Z_TO_SCHEMA, SCHEMA_L_CHANNELS, build_sanvito_blocks
-from neural_init.augnet.paw_moments import reconstruct_D
+from neural_paw_dft.augnet.paw_basis_transform import set_l_channel_overrides, sanvito_to_e3nn_with_basis_padded
+from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA, SCHEMA_L_CHANNELS, build_sanvito_blocks
+from neural_paw_dft.augnet.paw_moments import reconstruct_D
 
 SYMBOL = {16: "S", 42: "Mo"}
 SHELL = {0: "s", 1: "p", 2: "d", 3: "f"}
@@ -61,8 +61,8 @@ SHELL = {0: "s", 1: "p", 2: "d", 3: "f"}
 
 def physical_l_channels(z: int) -> list[int]:
     """The projector-l order these CHGCARs actually use (after any override)."""
-    from neural_init.augnet.paw_basis_transform import _L_CHANNEL_OVERRIDES
-    from neural_init.augnet.mp_potcar_map import MP_POTCAR_BY_Z
+    from neural_paw_dft.augnet.paw_basis_transform import _L_CHANNEL_OVERRIDES
+    from neural_paw_dft.augnet.mp_potcar_map import MP_POTCAR_BY_Z
 
     if int(z) in _L_CHANNEL_OVERRIDES:
         return list(_L_CHANNEL_OVERRIDES[int(z)])
@@ -91,14 +91,14 @@ def slot_labels(z: int) -> list[dict]:
 
 
 def _atomic_numbers(chgcar_path: str) -> np.ndarray:
-    from neural_init.augnet.run_paw_chgcar import read_text_maybe_lz4, _atomic_numbers_from_chgcar_header
+    from neural_paw_dft.augnet.run_paw_chgcar import read_text_maybe_lz4, _atomic_numbers_from_chgcar_header
 
     return _atomic_numbers_from_chgcar_header(read_text_maybe_lz4(chgcar_path))
 
 
 def read_truth(chgcar_path: str, atomic_numbers: np.ndarray) -> np.ndarray:
     """Ground-truth augmentation blocks, padded to [n_atoms, 390], Sanvito order."""
-    from neural_init.augnet.run_paw_chgcar import parse_aug_from_file, pack_aug_padded_sanvito
+    from neural_paw_dft.augnet.run_paw_chgcar import parse_aug_from_file, pack_aug_padded_sanvito
 
     vecs = parse_aug_from_file(chgcar_path, atomic_numbers)
     y, _ = pack_aug_padded_sanvito(vecs, atomic_numbers)

@@ -36,9 +36,9 @@ import yaml
 # the src.* / scripts.* imports below when this file is run directly.
 import os as _os, sys as _sys
 from scripts.analyze_l_channels import SYMBOL, read_truth, slot_labels
-from neural_init.augnet.paw_basis_transform import set_l_channel_overrides
-from neural_init.augnet.augnet_model import Z_TO_SCHEMA
-from neural_init.augnet.run_paw_chgcar import detect_lmaxmix, resolve_lmaxmix
+from neural_paw_dft.augnet.paw_basis_transform import set_l_channel_overrides
+from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA
+from neural_paw_dft.augnet.run_paw_chgcar import detect_lmaxmix, resolve_lmaxmix
 
 # Published reference rows, for the table header (MACE_COMPARISON_NOTE.md).
 REFERENCE = [
@@ -82,7 +82,7 @@ def collect(run_dir: Path) -> dict:
 
         # What this frame's own LMAXMIX was: coefficients above it were never
         # written by VASP, so scoring them measures nothing.
-        from neural_init.augnet.run_paw_chgcar import parse_aug_from_file
+        from neural_paw_dft.augnet.run_paw_chgcar import parse_aug_from_file
         lm = resolve_lmaxmix(detect_lmaxmix(zs, parse_aug_from_file(source, zs)))
         mid = Path(npz_path).name.replace("_total_aug.npz", "")
 

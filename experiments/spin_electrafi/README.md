@@ -1,6 +1,6 @@
-> **Moved.** The code now lives in the installable package `neural_init.spin_electrafi`; install with
+> **Moved.** The code now lives in the installable package `neural_paw_dft.spin_electrafi`; install with
 > `pip install -e ".[train]"` from the repository root (no separate `setup.py`; fairchem-core is no longer
-> required). `train.py` / `eval_spin_constrained.py` are `neural_init/spin_electrafi/*.py`
+> required). `train.py` / `eval_spin_constrained.py` are `neural_paw_dft/spin_electrafi/*.py`
 > (`ndi-electrafi-train`), configs are packaged, checkpoints live in `trained_models/spin_electrafi/`.
 
 # ELECTRAFI spin-density model

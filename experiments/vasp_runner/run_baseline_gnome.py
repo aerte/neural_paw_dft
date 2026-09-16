@@ -37,15 +37,15 @@ import wandb
 from pymatgen.io.vasp.inputs import Incar, Poscar
 from pymatgen.io.vasp.outputs import Outcar
 
-from neural_init.vasp_runner import runs_db, results
-from neural_init.vasp_runner.chgcar import (
+from neural_paw_dft.vasp_runner import runs_db, results
+from neural_paw_dft.vasp_runner.chgcar import (
     build_total_only_chgcar,
     get_chgcar_grid_dims_textparse,
 )
-from neural_init.vasp_runner.failsafe import run_guarded, watchdog
-from neural_init.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
-from neural_init.vasp_runner.scf import prune_workdir_keep_outputs
-from neural_init.vasp_runner.sources.gnome2 import (
+from neural_paw_dft.vasp_runner.failsafe import run_guarded, watchdog
+from neural_paw_dft.vasp_runner.oszicar import count_scf_breakdown_from_oszicar
+from neural_paw_dft.vasp_runner.scf import prune_workdir_keep_outputs
+from neural_paw_dft.vasp_runner.sources.gnome2 import (
     MissingGnomeInputsError,
     derive_gid,
     materialize_chgcar,
@@ -191,7 +191,7 @@ def main():
 
     relax_map = None
     if args.relaxed_magmoms:
-        from neural_init.vasp_runner.relaxmag import load_relaxed_magmoms
+        from neural_paw_dft.vasp_runner.relaxmag import load_relaxed_magmoms
         relax_map = load_relaxed_magmoms(args.relaxed_magmoms)
         print(f"Per-site magmoms: {len(relax_map)} usable gids from "
               f"{args.relaxed_magmoms} (others keep the reference MAGMOM)")

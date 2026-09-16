@@ -20,10 +20,10 @@ from pymatgen.io.vasp.inputs import Incar
 from pymatgen.io.vasp.outputs import Oszicar, Outcar
 
 import scf_stats
-from neural_init.vasp_runner import runs_db, results
-from neural_init.vasp_runner.failsafe import run_guarded
-from neural_init.vasp_runner.scf import prune_workdir_keep_outputs
-from neural_init.vasp_runner.sources.mp import (
+from neural_paw_dft.vasp_runner import runs_db, results
+from neural_paw_dft.vasp_runner.failsafe import run_guarded
+from neural_paw_dft.vasp_runner.scf import prune_workdir_keep_outputs
+from neural_paw_dft.vasp_runner.sources.mp import (
     MissingMPTaskDocError,
     derive_mpid,
     write_mp_inputs_for_mpid,
@@ -164,7 +164,7 @@ def run_vasp_mp(
     elif relax_magmom is not None:
         # Per-site relaxed moments (MP relax-task output) replacing MP's own
         # MAGMOM; see vasp_runner/relaxmag.py.
-        from neural_init.vasp_runner.relaxmag import apply_relaxed_magmom
+        from neural_paw_dft.vasp_runner.relaxmag import apply_relaxed_magmom
         apply_relaxed_magmom(incar, relax_magmom)
     # Arbitrary INCAR overrides (e.g. --incar-set LMAXMIX=4), applied last.
     if incar_overrides:
@@ -347,7 +347,7 @@ def main():
 
     relax_map = None
     if args.relaxed_magmoms:
-        from neural_init.vasp_runner.relaxmag import load_relaxed_magmoms
+        from neural_paw_dft.vasp_runner.relaxmag import load_relaxed_magmoms
         relax_map = load_relaxed_magmoms(args.relaxed_magmoms, args.pbe_only)
         print(f"Relaxed magmoms: {len(relax_map)} usable mp-ids from "
               f"{args.relaxed_magmoms} (others keep MP's own MAGMOM)")

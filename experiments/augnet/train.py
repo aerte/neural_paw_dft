@@ -4,7 +4,7 @@
 Thin entry point over src/train_augnet.py; run `python train.py --help`
 for the full CLI. Evaluation of a trained checkpoint goes through eval.py.
 """
-from neural_init.augnet.train_augnet import main
+from neural_paw_dft.augnet.train_augnet import main
 
 if __name__ == "__main__":
     main()

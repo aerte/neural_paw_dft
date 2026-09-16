@@ -7,11 +7,11 @@ from pymatgen.core import Lattice, Structure
 from pymatgen.io.vasp.inputs import Incar, Poscar
 from pymatgen.io.vasp.outputs import Chgcar
 
-from neural_init.augnet.augnet_model import Z_TO_SCHEMA
-from neural_init.augnet.run_paw_chgcar import predicted_aug_blocks_text
-from neural_init.pipeline import assemble
-from neural_init.pipeline.config import VaspConfig
-from neural_init.vasp_runner.chgcar import read_spin_moment_line, _dims_line
+from neural_paw_dft.augnet.augnet_model import Z_TO_SCHEMA
+from neural_paw_dft.augnet.run_paw_chgcar import predicted_aug_blocks_text
+from neural_paw_dft.pipeline import assemble
+from neural_paw_dft.pipeline.config import VaspConfig
+from neural_paw_dft.vasp_runner.chgcar import read_spin_moment_line, _dims_line
 
 AUG_HDR = re.compile(r"^augmentation occupancies\s*(\d+)\s*(\d+)$")
 

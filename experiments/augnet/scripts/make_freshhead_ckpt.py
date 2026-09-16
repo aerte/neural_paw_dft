@@ -22,8 +22,8 @@ from pathlib import Path
 import torch
 
 
-from neural_init.augnet.paw_head_shared import SharedPAWHead
-from neural_init.augnet.train_augnet import hidden_irreps_from_width, seed_everything
+from neural_paw_dft.augnet.paw_head_shared import SharedPAWHead
+from neural_paw_dft.augnet.train_augnet import hidden_irreps_from_width, seed_everything
 
 from e3nn import o3
 

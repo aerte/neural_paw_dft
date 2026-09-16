@@ -1,16 +1,18 @@
 # Neural Electronic Initialization
 
 Code for "Complete Neural Electronic Initialization Accelerates Materials DFT", packaged as one
-installable distribution, `neural_init`, with an end-to-end inference pipeline:
+installable distribution, `neural_paw_dft`, with an end-to-end inference pipeline:
 
 structure (or CHGCAR) → ELECTRAFI total + spin density grids, AugNet PAW augmentation
 occupancies, CHGNet site moments → a VASP-ready directory (`CHGCAR`, `INCAR` with
 `ICHARG=1`, `POSCAR`, `POTCAR`, `KPOINTS`).
 
+![Overview of the neural initialization pipeline](figures/overview.png)
+
 ## Layout
 
 ```
-neural_init/            the installable package
+neural_paw_dft/            the installable package
   spin_electrafi/           ELECTRAFI adapted for spin-difference densities (EScAIP backbone)
   augnet/                   AugNet: augmentation occupancies from a MACE backbone
   vasp_runner/              CHGCAR channel surgery, INCAR/OSZICAR helpers, VASP experiment plumbing
@@ -33,40 +35,50 @@ CUDA first (or skip this line to get PyPI's default build):
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install "torch>=2.4.1" --index-url https://download.pytorch.org/whl/cu124   # optional, match your CUDA
-pip install -e ".[cueq-cuda]"      # GPU: fused cuEquivariance kernels for AugNet
-pip install -e .                   # CPU / macOS
+pip install -e .                   # inference (CPU or GPU)
+pip install -e ".[cueq-cuda]"      # + fused cuEquivariance kernels, needed to train AugNet or load the original .ckpt files
 pip check
 ```
 
-Extras: `train` (wandb, plotly, ...), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc),
-`mp` (Materials Project API for the experiment scripts), `dev` (pytest, ruff, build).
+Extras: `train` (wandb, plotly, ...), `cueq` / `cueq-cuda` (cuEquivariance, CPU or with CUDA
+kernels), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc), `mp` (Materials Project API for the
+experiment scripts), `dev` (pytest, ruff, build).
 
 Notes on the dependency set:
 
 - `fairchem-core` and `torch_scatter`/`torch_cluster` are no longer needed. The few fairchem
   helpers the EScAIP backbone used (periodic radius graph, distance smearing) are vendored under
-  `neural_init/spin_electrafi/model/escaip/utils/` (MIT, see `LICENSE.fairchem`); numerics are unchanged.
+  `neural_paw_dft/spin_electrafi/model/escaip/utils/` (MIT, see `LICENSE.fairchem`); numerics are unchanged.
 - The EScAIP backbone was trained with e3nn >= 0.5 spherical harmonics up to l = 12 (component
   normalization). e3nn 0.4.4, which MACE pins, stops at l = 11 and normalizes differently, so the
   e3nn 0.5.1 `_spherical_harmonics` function is vendored verbatim (`LICENSE.e3nn`). AugNet itself was
   trained with e3nn 0.4.4 and uses it unchanged.
 - `pykeops` compiles its kernels at first use and needs a C++ compiler (and CUDA for GPU runs) at runtime.
-- `cuequivariance` / `cuequivariance-torch` are required because the AugNet checkpoints are stored in
-  cuEquivariance module layout; they run on CPU without the CUDA kernel package.
+- The published AugNet weights are in plain e3nn layout and need no cuEquivariance. The original
+  Lightning `.ckpt` files are stored in cuEquivariance module layout and need the `cueq` extra
+  (CPU-capable without the CUDA kernel package).
 
 ### Weights
 
-Weights are not in the repository. Put them under `trained_models/` (the default when installed
-editable), or point `weights_dir` in the YAML or `NDI_WEIGHTS_DIR` at a directory laid out as
+Weights are not in the repository. They are published as inference-only `safetensors` at
+[huggingface.co/faerte/neural_paw_dft](https://huggingface.co/faerte/neural_paw_dft) and are
+downloaded on first use into the weights directory: `weights_dir` in the YAML, else
+`NDI_WEIGHTS_DIR`, else `trained_models/` (the default when installed editable). The layout is
+flat, one file per registry name (`neural_paw_dft/models.py`):
 
 ```
-trained_models/augnet/{full,50k,10k,1k,spin_full}.ckpt
-trained_models/spin_electrafi/spin_density/{constrained,unconstrained}_spin_electrafi.ckpt
-trained_models/spin_electrafi/total_density/ELECTRAFI_BEST.model_state_dict
+trained_models/augnet_total_full.safetensors        (+ augnet_total_full.config.json sidecar)
+trained_models/augnet_spin_full.safetensors         (+ sidecar)
+trained_models/electrafi_total.safetensors
+trained_models/electrafi_spin_constrained.safetensors
+...
 ```
 
-The registry names are in `neural_init/models.py` (`electrafi_spin_constrained`,
-`augnet_total_full`, ...); any config entry also accepts a plain path.
+Registry names are `electrafi_total`, `electrafi_total_v2`, `electrafi_spin_constrained`,
+`electrafi_spin_unconstrained`, `augnet_total_{full,50k,10k,1k}` and `augnet_spin_full`. Any
+config entry also accepts a plain path; the original Lightning `.ckpt` / `.model_state_dict`
+training checkpoints still load that way (AugNet `.ckpt`s need `cuequivariance`). The published
+AugNet weights are in plain e3nn layout, so `augnet.enable_cueq` must stay unset for them.
 
 ## Usage
 
@@ -78,15 +90,19 @@ ndi predict POSCAR --grid 60 60 60 --out preds/   # grids (.npy) and augmentatio
 ```
 
 `ndi build` writes `INCAR`/`POSCAR`/`POTCAR`/`KPOINTS` with pymatgen's `MPStaticSet`
-(`ICHARG=1`, `ISTART=0`, `LCHARG=.TRUE.`, `MAGMOM` from CHGNet), then the `CHGCAR`, then
+(`ICHARG=1`, `ISTART=0`, `LCHARG=.TRUE.`, `MAGMOM` from CHGNet; `POTCAR.spec` instead of `POTCAR` when no
+POTCAR library is configured), then the `CHGCAR`, then
 `ndi_prediction.json` (NELECT, integrals, moments, weights used). It never submits or runs the
 calculation. The FFT grid comes from, in order: `grid_dims` / `--grid`, a CHGCAR input,
 `NGXF/NGYF/NGZF` in `incar_overrides`, or, if `vasp.vasp_cmd` is set, a one-step VASP dry run.
 
+Both subcommands also take `--device`, `--weights-dir`, `--no-spin` (skip writing the spin grid) and
+`--no-chgnet`; `build` additionally takes `--incar KEY=VAL ...` for INCAR overrides applied last.
+
 Python:
 
 ```python
-from neural_init.pipeline import Pipeline, load_config
+from neural_paw_dft.pipeline import Pipeline, load_config
 
 pipe = Pipeline(load_config("ndi.yaml"))
 pipe.build("POSCAR", "fe2o3_seed")            # full directory
@@ -99,7 +115,8 @@ sum (the paper's convention). Set `chgnet.enabled: false` or `--no-chgnet` to sk
 ## Example notebook
 
 `examples/demo.ipynb` runs the whole thing on bcc Fe on CPU: CHGNet moments, ELECTRAFI grids,
-AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/`.
+AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/`. It needs `jupyter`, `matplotlib`
+and `plotly` on top of the package.
 
 ## Tests
 

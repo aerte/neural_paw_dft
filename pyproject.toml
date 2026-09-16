@@ -3,11 +3,23 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "neural_init"
-version = "0.1.0"
+name = "neural_paw_dft"
+dynamic = ["version"]
 description = "Complete neural electronic initialization for VASP: spin-ELECTRAFI densities, AugNet augmentation occupancies, CHGNet moments, and VASP input preparation"
 readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "aerte", email = "felar@dtu.dk" }]
 requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Operating System :: OS Independent",
+]
 dependencies = [
     # Deep-learning core. torch is deliberately not pinned to a CUDA build:
     # install the wheel matching your CUDA first, everything below accepts any torch>=2.4.1.
@@ -17,12 +29,11 @@ dependencies = [
     "mace-torch==0.3.16",
     "torch-geometric>=2.5",     # pure python (Data/Batch, sort_edge_index)
     "pykeops>=2.3",             # ELECTRAFI Gaussian -> reciprocal-space reduction; JIT-compiles at first use
-    "cuequivariance>=0.2.0",    # AugNet checkpoints are stored in cuEquivariance module layout
-    "cuequivariance-torch>=0.2.0",
     "chgnet>=0.4.2",
+    "safetensors>=0.4",
+    "huggingface_hub>=0.20",     # downloads registry weights from faerte/neural_paw_dft on first use
     # Materials / IO
     "numpy",
-    "scipy",
     "ase>=3.23",
     "pymatgen>=2024.9.10",
     "lz4>=4",
@@ -31,26 +42,35 @@ dependencies = [
 
 [project.optional-dependencies]
 train = ["wandb", "torchmetrics", "prettytable", "tqdm", "plotly", "dill"]
-cueq-cuda = ["cuequivariance-ops-torch-cu12"]     # fused CUDA kernels; CPU fallback without it
+# The published safetensors are in plain e3nn layout; cuEquivariance is only needed to train AugNet
+# or to load the original Lightning .ckpt files, which are stored in cuEquivariance module layout.
+cueq = ["cuequivariance>=0.2.0", "cuequivariance-torch>=0.2.0"]
+cueq-cuda = ["cuequivariance>=0.2.0", "cuequivariance-torch>=0.2.0", "cuequivariance-ops-torch-cu12"]  # fused CUDA kernels
 oeq = ["openequivariance>=0.6.0"]                # needs torch>=2.7 + nvcc; weights load with enable_oeq=false
 mp = ["mp-api>=0.46", "pandas", "python-dotenv"] # Materials Project source, harvest and data_prep scripts
 dev = ["pytest", "ruff", "build"]
 
-[project.scripts]
-ndi = "neural_init.pipeline.cli:main"
-ndi-augnet-train = "neural_init.augnet.train_augnet:main"
-ndi-electrafi-train = "neural_init.spin_electrafi.train:run"
+[project.urls]
+Homepage = "https://github.com/aerte/neural_paw_dft"
+Repository = "https://github.com/aerte/neural_paw_dft"
+Weights = "https://huggingface.co/faerte/neural_paw_dft"
+Issues = "https://github.com/aerte/neural_paw_dft/issues"
 
-[tool.setuptools]
-zip-safe = false
+[project.scripts]
+ndi = "neural_paw_dft.pipeline.cli:main"
+ndi-augnet-train = "neural_paw_dft.augnet.train_augnet:main"
+ndi-electrafi-train = "neural_paw_dft.spin_electrafi.train:run"
+
+[tool.setuptools.dynamic]
+version = { attr = "neural_paw_dft.__version__" }
 
 [tool.setuptools.packages.find]
-include = ["neural_init*"]
+include = ["neural_paw_dft*"]
 
 [tool.setuptools.package-data]
-"neural_init.augnet" = ["stats/*.pt", "stats/*.json", "configs/*.yaml", "data_splits/*.json"]
-"neural_init.spin_electrafi" = ["*.yaml", "configs/*.yaml", "data_splits/*.json"]
-"neural_init.spin_electrafi.model.escaip" = ["*.yaml", "LICENSE.fairchem", "LICENSE.e3nn"]
+"neural_paw_dft.augnet" = ["stats/*.pt", "stats/*.json", "configs/*.yaml", "data_splits/*.json"]
+"neural_paw_dft.spin_electrafi" = ["*.yaml", "configs/*.yaml", "data_splits/*.json"]
+"neural_paw_dft.spin_electrafi.model.escaip" = ["*.yaml", "LICENSE.fairchem", "LICENSE.e3nn"]
 
 [tool.ruff]
 line-length = 120

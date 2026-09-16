@@ -49,7 +49,7 @@ def content_hash(path: Path) -> str:
     Compression metadata and byte-level framing are irrelevant here, and this is
     the same quantity the model is trained on.
     """
-    from neural_init.augnet.run_paw_chgcar import stream_aug_channels_from_file
+    from neural_paw_dft.augnet.run_paw_chgcar import stream_aug_channels_from_file
 
     zs, channels = stream_aug_channels_from_file(str(path))
     h = hashlib.md5(zs.tobytes())

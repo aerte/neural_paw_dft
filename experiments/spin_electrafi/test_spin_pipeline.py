@@ -24,11 +24,11 @@ import torch
 import yaml
 from torch.utils.data import DataLoader
 
-from neural_init._resources import resolve_data_path
-from neural_init.spin_electrafi.model.data_utils import DensityDataset, collate_fn
-from neural_init.spin_electrafi.model.ELECTRAFI import ELECTRAFI
-from neural_init.spin_electrafi.tools.density_conversions import get_density
-from neural_init.spin_electrafi.utils.train_helper_funcs import set_all_paths, set_all_seeds
+from neural_paw_dft._resources import resolve_data_path
+from neural_paw_dft.spin_electrafi.model.data_utils import DensityDataset, collate_fn
+from neural_paw_dft.spin_electrafi.model.ELECTRAFI import ELECTRAFI
+from neural_paw_dft.spin_electrafi.tools.density_conversions import get_density
+from neural_paw_dft.spin_electrafi.utils.train_helper_funcs import set_all_paths, set_all_seeds
 
 CONFIG_PATH = "local_conf.yaml"
 DATA_DIR = "data"

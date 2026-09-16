@@ -4,8 +4,8 @@ import yaml
 from pymatgen.core import Lattice, Structure
 from pymatgen.io.vasp.inputs import Poscar
 
-from neural_init.pipeline import inputs
-from neural_init.pipeline.config import PipelineConfig, config_template, load_config
+from neural_paw_dft.pipeline import inputs
+from neural_paw_dft.pipeline.config import PipelineConfig, config_template, load_config
 
 
 def test_template_roundtrip(tmp_path):

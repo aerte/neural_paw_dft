@@ -1,4 +1,4 @@
-> **Moved.** The library is now `neural_init.vasp_runner` (install with `pip install -e ".[train,mp]"`
+> **Moved.** The library is now `neural_paw_dft.vasp_runner` (install with `pip install -e ".[train,mp]"`
 > from the repository root); the runner, submission and report scripts stay in this directory and run from here.
 
 # clean_vasp_runner

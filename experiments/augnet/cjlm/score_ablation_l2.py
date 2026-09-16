@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 
 import cjlm.cjlm_paper_comparison as cpc
-from neural_init.augnet import run_paw_chgcar as rpc
+from neural_paw_dft.augnet import run_paw_chgcar as rpc
 import scripts.analyze_l_channels as alc
 
 # collect() re-parses each frame's CHGCAR for truth and for LMAXMIX detection.

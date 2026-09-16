@@ -53,15 +53,15 @@ import torch
 # Bootstrap: repo root (parent of this script's dir) must be importable for
 # the src.* / scripts.* imports below when this file is run directly.
 import os as _os, sys as _sys
-from neural_init.augnet.mp_potcar_map import MP_POTCAR, MP_POTCAR_BY_Z
-from neural_init.augnet.paw_basis_transform import (
+from neural_paw_dft.augnet.mp_potcar_map import MP_POTCAR, MP_POTCAR_BY_Z
+from neural_paw_dft.augnet.paw_basis_transform import (
     Z_TO_SCHEMA,
     physical_to_canonical_blocks,
     sanvito_to_e3nn_with_basis_padded,
     set_l_channel_overrides,
 )
-from neural_init.augnet.paw_moments import moments_from_coeffs
-from neural_init.augnet.paw_stats import CHANNELS, MAX_DIM, PAWStats
+from neural_paw_dft.augnet.paw_moments import moments_from_coeffs
+from neural_paw_dft.augnet.paw_stats import CHANNELS, MAX_DIM, PAWStats
 
 SYMBOL_BY_Z = {z: e["element"] for z, e in MP_POTCAR_BY_Z.items()}
 

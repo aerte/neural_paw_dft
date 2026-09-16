@@ -7,3 +7,4 @@ build/
 *.egg-info/
 .venv/
 examples/demo_out/
+hf_export/
