@@ -67,3 +67,29 @@ assert abs(rho.sum() * 5.43**3 / rho.size - 8.0) < 1e-3
 assert 'lightning' not in sys.modules
 """
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+def test_constrained_spin_model_requires_m_total():
+    if not _have("electrafi_spin_constrained", "electrafi_spin_unconstrained"):
+        pytest.skip("spin weights missing")
+    from pymatgen.core import Lattice, Structure
+
+    from neural_paw_dft.pipeline.config import ChgnetConfig, ElectrafiConfig, PipelineConfig
+    from neural_paw_dft.pipeline.electrafi import load_electrafi, predict_density
+    from neural_paw_dft.pipeline.pipeline import Pipeline
+
+    fe = Structure(Lattice.cubic(2.87), ["Fe", "Fe"], [[0, 0, 0], [0.5, 0.5, 0.5]])
+    con = load_electrafi(ElectrafiConfig(checkpoint="electrafi_spin_constrained"), torch.device("cpu"), n_atoms=2)
+    with pytest.raises(ValueError, match="m_total"):
+        predict_density(con, fe, (12, 12, 12), n_elec=16.0)
+    _, rho_spin = predict_density(con, fe, (12, 12, 12), n_elec=16.0, m_total=4.4)
+    assert abs(rho_spin.sum() * fe.volume / rho_spin.size - 4.4) < 1e-3
+
+    unc = load_electrafi(ElectrafiConfig(checkpoint="electrafi_spin_unconstrained"), torch.device("cpu"), n_atoms=2)
+    predict_density(unc, fe, (12, 12, 12), n_elec=16.0)  # no constraint needed
+
+    cfg = PipelineConfig(device="cpu", grid_dims=(12, 12, 12), chgnet=ChgnetConfig(enabled=False))
+    with pytest.raises(ValueError, match="net-moment constraint"):
+        Pipeline(cfg).predict(fe)
+    cfg.electrafi.spin = False  # spin grid discarded: no constraint required
+    assert Pipeline(cfg).predict(fe).rho_spin is None

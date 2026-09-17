@@ -101,6 +101,15 @@ class Pipeline:
         m_total = float(np.sum(site_moments)) if site_moments is not None else None
 
         model = self.electrafi(len(structure))
+        constrained = model._ndi_has_spin and model.config.get("spin_renorm", True)
+        if constrained and m_total is None:
+            if not self.cfg.electrafi.spin:
+                m_total = 0.0  # spin grid is discarded below; 0 just disables the rescale
+            else:
+                raise ValueError(
+                    f"{self.cfg.electrafi.checkpoint} needs a net-moment constraint: enable CHGNet "
+                    "(chgnet.enabled / drop --no-chgnet), pass site_moments, or use electrafi_spin_unconstrained"
+                )
         rho_total, rho_spin = predict_density(model, structure, grid_dims, nelect, m_total)
         if not self.cfg.electrafi.spin:
             rho_spin = None

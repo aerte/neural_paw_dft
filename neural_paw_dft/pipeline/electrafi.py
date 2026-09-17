@@ -130,8 +130,16 @@ def predict_density(
 
     ``n_elec`` fixes the integral of the total density exactly; ``m_total`` is the net
     moment in electrons used for the constrained spin arm (ignored when |m| < spin_mag_min
-    or the model was trained with spin_renorm: false).
+    or the model was trained with spin_renorm: false). A constrained spin model without
+    ``m_total`` raises: its spin amplitude is only meaningful once pinned to a net moment
+    (the pipeline takes the sum of CHGNet's site moments).
     """
+    if model._ndi_has_spin and m_total is None and model.config.get("spin_renorm", True):
+        raise ValueError(
+            "this spin checkpoint was trained with a net-moment constraint; pass m_total "
+            "(e.g. the sum of CHGNet site moments, or 0.0 to disable the rescale on purpose), "
+            "or use electrafi_spin_unconstrained"
+        )
     atoms = AseAtomsAdaptor.get_atoms(structure)  # fresh copy: the model mutates atoms.pbc
     grid_dims = tuple(int(x) for x in grid_dims)
     if tuple(model.pw.real_shape) != grid_dims:

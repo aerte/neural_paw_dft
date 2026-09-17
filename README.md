@@ -112,7 +112,9 @@ pred = pipe.predict("POSCAR", grid_dims=(60, 60, 60))   # arrays only: pred.rho_
 ```
 
 CHGNet moments are unsigned; the spin constraint passed to the constrained ELECTRAFI arm is their
-sum (the paper's convention). Set `chgnet.enabled: false` or `--no-chgnet` to skip both.
+sum (the paper's convention). Set `chgnet.enabled: false` or `--no-chgnet` to skip both; with the
+constrained spin model that is an error unless you also pass `site_moments` yourself or switch to
+`electrafi_spin_unconstrained`, since its spin amplitude is only meaningful once pinned to a net moment.
 
 ## Example notebook
 
