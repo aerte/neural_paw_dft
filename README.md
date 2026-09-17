@@ -112,14 +112,3 @@ constrained spin model that is an error unless you also pass `site_moments` your
 
 `examples/demo.ipynb` runs the whole thing on bcc Fe on CPU: CHGNet moments, ELECTRAFI grids,
 AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/` (`pip install -e ".[examples]"`).
-
-## Tests
-
-```bash
-pytest tests/                              # writer / input / config / CLI tests need no weights
-NDI_TEST_DOWNLOAD_WEIGHTS=1 pytest tests/  # also fetch the weights from the Hub and run the model tests
-```
-
-The model tests skip when the weights are not in the weights directory unless
-`NDI_TEST_DOWNLOAD_WEIGHTS=1` is set, in which case they are downloaded first (the CI workflow does this
-when an `HF_TOKEN` secret with access to the weights repo is configured).
