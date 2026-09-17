@@ -48,7 +48,7 @@ examples = ["jupyter", "matplotlib", "plotly"]  # examples/demo.ipynb
 cueq = ["cuequivariance>=0.2.0", "cuequivariance-torch>=0.2.0"]
 cueq-cuda = ["cuequivariance>=0.2.0", "cuequivariance-torch>=0.2.0", "cuequivariance-ops-torch-cu12"]  # fused CUDA kernels
 oeq = ["openequivariance>=0.6.0"]                # needs torch>=2.7 + nvcc; weights load with enable_oeq=false
-mp = ["mp-api>=0.46", "pandas", "python-dotenv"] # Materials Project source, harvest and data_prep scripts
+mp = ["mp-api>=0.46; python_version >= '3.11'", "pandas", "python-dotenv"] # Materials Project source, harvest and data_prep scripts
 dev = ["pytest", "ruff", "build"]
 
 [project.urls]

@@ -1,11 +1,16 @@
 # Neural Electronic Initialization
 
-Code for "Complete Neural Electronic Initialization Accelerates Materials DFT", packaged as one
+Code for "Complete Neural Electronic Initialization Accelerates Materials DFT" (link here), packaged as one
 installable distribution, `neural_paw_dft`, with an end-to-end inference pipeline:
 
 structure (or CHGCAR) → ELECTRAFI total + spin density grids, AugNet PAW augmentation
 occupancies, CHGNet site moments → a VASP-ready directory (`CHGCAR`, `INCAR` with
 `ICHARG=1`, `POSCAR`, `POTCAR`, `KPOINTS`).
+
+> [!IMPORTANT]
+> The code used to produce the paper's results is in the `v1` branch (tag `v1-paper`). There are no
+> numerical differences at the moment, but we do not guarantee that results stay identical as the code
+> on `main` continues to develop.
 
 ![Overview of the neural initialization pipeline](figures/overview.png)
 
@@ -39,6 +44,18 @@ pip install -e .                   # inference (CPU or GPU)
 pip install -e ".[cueq-cuda]"      # + fused cuEquivariance kernels, needed to train AugNet or load the original .ckpt files
 pip check
 ```
+
+Or with [uv](https://docs.astral.sh/uv/), which creates `.venv` from the committed `uv.lock`
+(PyPI torch; on Linux that wheel bundles CUDA):
+
+```bash
+uv sync                            # inference
+uv sync --extra dev                # + pytest, ruff, build; extras combine: --extra dev --extra cueq-cuda
+uv run ndi --version
+```
+
+For a specific CUDA build, install torch from its index into the synced environment afterwards:
+`uv pip install "torch>=2.4.1" --index-url https://download.pytorch.org/whl/cu124`.
 
 Extras: `train` (Lightning, wandb, plotly, ...; inference needs none of it), `cueq` / `cueq-cuda`
 (cuEquivariance, CPU or with CUDA kernels), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc), `mp`
