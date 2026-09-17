@@ -34,47 +34,22 @@ evaluation commands there now run from `experiments/<name>/` against the install
 
 ## Installation
 
-Python >= 3.10. One torch install serves all three models and CHGNet; pick the wheel for your
-CUDA first (or skip this line to get PyPI's default build):
+Python >= 3.10. Pick the torch wheel matching your CUDA first, or skip that line for PyPI's default build.
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install "torch>=2.4.1" --index-url https://download.pytorch.org/whl/cu124   # optional, match your CUDA
-pip install -e .                   # inference (CPU or GPU)
-pip install -e ".[cueq-cuda]"      # + fused cuEquivariance kernels, needed to train AugNet or load the original .ckpt files
-pip check
+pip install "torch>=2.4.1" --index-url https://download.pytorch.org/whl/cu124   # optional
+pip install -e .
 ```
 
-Or with [uv](https://docs.astral.sh/uv/), which creates `.venv` from the committed `uv.lock`
-(PyPI torch; on Linux that wheel bundles CUDA):
+Or with [uv](https://docs.astral.sh/uv/) from the committed `uv.lock`:
 
 ```bash
-uv sync                            # inference
-uv sync --extra dev                # + pytest, ruff, build; extras combine: --extra dev --extra cueq-cuda
+uv sync
 uv run ndi --version
 ```
 
-For a specific CUDA build, install torch from its index into the synced environment afterwards:
-`uv pip install "torch>=2.4.1" --index-url https://download.pytorch.org/whl/cu124`.
-
-Extras: `train` (Lightning, wandb, plotly, ...; inference needs none of it), `cueq` / `cueq-cuda`
-(cuEquivariance, CPU or with CUDA kernels), `oeq` (OpenEquivariance, needs torch>=2.7 and nvcc), `mp`
-(Materials Project API for the experiment scripts), `examples` (Jupyter, matplotlib, plotly for the demo
-notebook), `dev` (pytest, ruff, build).
-
-Notes on the dependency set:
-
-- `fairchem-core` and `torch_scatter`/`torch_cluster` are no longer needed. The few fairchem
-  helpers the EScAIP backbone used (periodic radius graph, distance smearing) are vendored under
-  `neural_paw_dft/spin_electrafi/model/escaip/utils/` (MIT, see `LICENSE.fairchem`); numerics are unchanged.
-- The EScAIP backbone was trained with e3nn >= 0.5 spherical harmonics up to l = 12 (component
-  normalization). e3nn 0.4.4, which MACE pins, stops at l = 11 and normalizes differently, so the
-  e3nn 0.5.1 `_spherical_harmonics` function is vendored verbatim (`LICENSE.e3nn`). AugNet itself was
-  trained with e3nn 0.4.4 and uses it unchanged.
-- `pykeops` compiles its kernels at first use and needs a C++ compiler (and CUDA for GPU runs) at runtime.
-- The published AugNet weights are in plain e3nn layout and need no cuEquivariance. The original
-  Lightning `.ckpt` files are stored in cuEquivariance module layout and need the `cueq` extra
-  (CPU-capable without the CUDA kernel package).
+Extras: `train`, `cueq` / `cueq-cuda` (only for training AugNet or loading the original `.ckpt` files),
+`oeq`, `mp`, `examples`, `dev`. `pykeops` needs a C++ compiler at runtime.
 
 ### Weights
 
