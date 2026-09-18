@@ -1,6 +1,6 @@
 # Neural Electronic Initialization
 
-Code for "Complete Neural Electronic Initialization Accelerates Materials DFT" (link here), packaged as one
+Code for "Complete Neural Electronic Initialization Accelerates Materials DFT" (link soon), packaged as one
 installable distribution, `neural_paw_dft`, with an end-to-end inference pipeline:
 
 structure (or CHGCAR) → ELECTRAFI total + spin density grids, AugNet PAW augmentation
