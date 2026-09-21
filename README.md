@@ -1,13 +1,14 @@
 # Neural Electronic Initialization
 
-Code for "Complete Neural Electronic Initialization Accelerates Materials DFT" (link soon), packaged as one
-installable distribution, `neural_paw_dft`, with an end-to-end inference pipeline:
+Code for "Complete Neural Electronic Initialization Accelerates Materials DFT"
+([arXiv:2609.21759](https://arxiv.org/abs/2609.21759)), packaged as one installable distribution,
+`neural_paw_dft`, with an end-to-end inference pipeline:
 
 structure (or CHGCAR) → ELECTRAFI total + spin density grids, AugNet PAW augmentation
 occupancies, CHGNet site moments → a VASP-ready directory (`CHGCAR`, `INCAR` with
 `ICHARG=1`, `POSCAR`, `POTCAR`, `KPOINTS`).
 
-> [!IMPORTANT]
+> [!WARNING]
 > The code used to produce the paper's results is in the `v1` branch (tag `v1-paper`). There are no
 > numerical differences at the moment, but we do not guarantee that results stay identical as the code
 > on `main` continues to develop.
@@ -17,15 +18,16 @@ occupancies, CHGNet site moments → a VASP-ready directory (`CHGCAR`, `INCAR` w
 ## Layout
 
 ```
-neural_paw_dft/            the installable package
-  spin_electrafi/           ELECTRAFI adapted for spin-difference densities (EScAIP backbone)
-  augnet/                   AugNet: augmentation occupancies from a MACE backbone
-  vasp_runner/              CHGCAR channel surgery, INCAR/OSZICAR helpers, VASP experiment plumbing
-  pipeline/                 the inference workflow, YAML config and the `ndi` CLI
-  models.py                 registry of weight files (names -> paths under the weights directory)
-experiments/                training runs, SLURM submitters and report scripts for the paper (not installed)
-trained_models/             model weights (not tracked; see below)
-tests/
+.
+├── neural_paw_dft/           the installable package
+│   ├── spin_electrafi/       ELECTRAFI adapted for spin-difference densities (EScAIP backbone)
+│   ├── augnet/               AugNet: augmentation occupancies from a MACE backbone
+│   ├── vasp_runner/          CHGCAR channel surgery, INCAR/OSZICAR helpers, VASP experiment plumbing
+│   ├── pipeline/             the inference workflow, YAML config and the `ndi` CLI
+│   └── models.py             registry of weight files (names -> paths under the weights directory)
+├── experiments/              training runs, SLURM submitters and report scripts for the paper (not installed)
+├── trained_models/           model weights (not tracked; see below)
+└── tests/
 ```
 
 Each subpackage keeps its original README under `experiments/<name>/README.md`; the training and
@@ -112,3 +114,19 @@ constrained spin model that is an error unless you also pass `site_moments` your
 
 `examples/demo.ipynb` runs the whole thing on bcc Fe on CPU: CHGNet moments, ELECTRAFI grids,
 AugNet occupancies, and a `CHGCAR` written to `examples/demo_out/` (`pip install -e ".[examples]"`).
+
+## Citation
+
+If you use this work, please cite:
+
+> Ærtebjerg, Felix, et al. "Complete Neural Electronic
+> Initialization Accelerates Materials DFT." *arXiv preprint* arXiv:2609.21759 (2026).
+
+```bibtex
+@article{aertebjerg2026complete,
+  title   = {Complete Neural Electronic Initialization Accelerates Materials DFT},
+  author  = {{\AE}rtebjerg, Felix and Elsborg, Jonas and Bhowmik, Arghya},
+  journal = {arXiv preprint arXiv:2609.21759},
+  year    = {2026}
+}
+```
