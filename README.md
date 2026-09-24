@@ -130,3 +130,7 @@ If you use this work, please cite:
   year    = {2026}
 }
 ```
+
+---
+
+Copyright (c) 2026 Felix Ærtebjerg
